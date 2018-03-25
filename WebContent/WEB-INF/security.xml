@@ -1,0 +1,37 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/zones/**" access="isAuthenticated()" />
+		<intercept-url pattern="/defauts/**" access="isAuthenticated()" />
+		<intercept-url pattern="/users/recovery" access="permitAll()" />
+		<intercept-url pattern="/users/forgot" access="permitAll()" />
+		<intercept-url pattern="/users/**" access="isAuthenticated()" />
+		<intercept-url pattern="/projets/**" access="isAuthenticated()" />
+		<intercept-url pattern="/empiecements/**" access="isAuthenticated()" />
+		<intercept-url pattern="/familles/**" access="isAuthenticated()" />
+		<intercept-url pattern="/pieces/**" access="isAuthenticated()" />
+		<intercept-url pattern="/controlR/**" access="isAuthenticated()" />
+		<intercept-url pattern="/defaut_controle_reception/**" access="isAuthenticated()" />
+		<form-login login-page="/login" default-target-url="/" authentication-failure-url="/failer"/>
+		<logout logout-url="/logout" logout-success-url="/login"/>
+	</http>
+
+	<authentication-manager>
+	  <authentication-provider>
+	  <password-encoder hash="bcrypt" />
+	    <jdbc-user-service 
+	    data-source-ref="dataSource" 
+	    authorities-by-username-query="select username,role from Utilisateur us,UtilisateurRole ur where us.id_user=ur.utilisateur_id_user and username=?"
+	    users-by-username-query="select username,password,1 from Utilisateur where username=?"/>
+	  </authentication-provider>
+	</authentication-manager>
+
+</beans:beans>
+
+

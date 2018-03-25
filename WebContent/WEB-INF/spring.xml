@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	    xmlns:context="http://www.springframework.org/schema/context"
+	    xmlns:mvc="http://www.springframework.org/schema/mvc"
+	    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	    http://www.springframework.org/schema/tx
+	    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+	    
+	    xmlns:tx="http://www.springframework.org/schema/tx">
+	
+	    <context:component-scan base-package="com" />
+	    
+	    
+	     
+	    <bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/views/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="url"
+			value="jdbc:sqlserver://localhost:1433;databaseName=moi" />
+		<property name="username" value="aboud" />
+		<property name="password" value="18810320" />
+	</bean>
+	
+	<bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				
+				<value>com.model.Utilisateur</value>
+				<value>com.model.UtilisateurRole</value>
+				<value>com.model.Defaut</value>
+				<value>com.model.Zone</value>
+				<value>com.model.Piece</value>
+				<value>com.model.Famille</value>
+				<value>com.model.Projet</value>
+				<value>com.model.ControlInjection</value>
+				<value>com.model.ControlMur</value>
+				<value>com.model.Empiecement</value>
+				<value>com.model.DefautReception</value>
+				<value>com.model.Phase</value>
+				<value>com.model.Emballage</value>
+				<value>com.model.ControlReception</value>
+				<value>com.model.DefautControlReception</value>
+				<value>com.model.Fournisseur</value>
+				<value>com.model.Alert</value>
+				<value>com.model.Zone40F</value>
+				<value>com.model.DefautControl</value>
+				
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!--  utilisateur -->
+	<bean id="utilisateurDAO" class="com.dao.UtilisateurDAOImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="utilisateurService" class="com.service.UtilisateurServiceImpl">
+		<property name="utilisateurDAO" ref="utilisateurDAO"></property>
+	</bean>
+	
+	<!-- utilisateur role -->
+	<bean id="utilisateurRoleDAO" class="com.dao.UtilisateurRoleDAOImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="utilisateurRoleService" class="com.service.UtilisateurRoleServiceImpl">
+		<property name="utilisateurRoleDAO" ref="utilisateurRoleDAO"></property>
+	</bean>
+	
+	<!-- defaut -->
+	<bean id="defautDAO" class="com.dao.DefautDAOImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="defautService" class="com.service.DefautServiceImpl">
+		<property name="defautDAO" ref="defautDAO"></property>
+	</bean>
+	
+	<!-- defautReception -->
+	<bean id="defautReceptionDAO" class="com.dao.DefautReceptionDAOImpl">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	<bean id="defautReceptionService" class="com.service.DefautReceptionServiceImpl">
+		<property name="defautReceptionDAO" ref="defautReceptionDAO"></property>
+	</bean>
+	
+	<!-- controlInjection -->
+	<bean id="controlInjectionDAO" class="com.dao.ControlInjectionDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="controlInjectionService" class="com.service.ControlInjectionServiceImpl">
+		<property name="controlInjectionDAO" ref="controlInjectionDAO"></property>
+	</bean>
+	
+	<!-- controlMur -->
+	<bean id="controlMurDAO" class="com.dao.ControlMurDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="controlMurService" class="com.service.ControlMurServiceImpl">
+		<property name="controlMurDAO" ref="controlMurDAO"></property>
+	</bean>
+	
+	
+	<!-- famille -->
+	<bean id="familleDAO" class="com.dao.FamilleDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="familleService" class="com.service.FamilleServiceImpl">
+		<property name="familleDAO" ref="familleDAO"></property>
+	</bean>
+	
+	<!-- piece -->
+	<bean id="pieceDAO" class="com.dao.PieceDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="pieceService" class="com.service.PieceServiceImpl">
+		<property name="pieceDAO" ref="pieceDAO"></property>
+	</bean>
+	
+	<!-- projet -->
+	<bean id="projetDAO" class="com.dao.ProjetDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="projetService" class="com.service.ProjetServiceImpl">
+		<property name="projetDAO" ref="projetDAO"></property>
+	</bean>
+	
+	<!-- zone -->
+	<bean id="zoneDAO" class="com.dao.ZoneDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="zoneService" class="com.service.ZoneServiceImpl">
+		<property name="zoneDAO" ref="zoneDAO"></property>
+	</bean>
+	
+	<!-- defautControl -->
+	<bean id="defautControlDAO" class="com.dao.DefautControlDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="defautControlService" class="com.service.DefautControlServiceImpl">
+		<property name="defautControlDAO" ref="defautControlDAO"></property>
+	</bean>
+	
+	<!-- empiecement -->
+	<bean id="empiecementDAO" class="com.dao.EmpiecementDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="empiecementService" class="com.service.EmpiecementServiceImpl">
+	<property name="empiecementDAO" ref="empiecementDAO"></property>
+	</bean>
+	
+	<!-- phase -->
+	<bean id="phaseDAO" class="com.dao.PhaseDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="phaseService" class="com.service.PhaseServiceImpl">
+	<property name="phaseDAO" ref="phaseDAO"></property>
+	</bean>
+	
+	<!-- emballage -->
+	<bean id="emballageDAO" class="com.dao.EmballageDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="emballageService" class="com.service.EmballageServiceImpl">
+	<property name="emballageDAO" ref="emballageDAO"></property>
+	</bean>
+	
+	<!-- controlReception -->
+	<bean id="controlReceptionDAO" class="com.dao.ControlReceptionDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="controlReceptionService" class="com.service.ControlReceptionServiceImpl">
+	<property name="controlReceptionDAO" ref="controlReceptionDAO"></property>
+	</bean>
+	
+	<!-- defautControlReception -->
+	<bean id="defautControlReceptionDAO" class="com.dao.DefautControlReceptionDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="defautControlReceptionService" class="com.service.DefautControlReceptionServiceImpl">
+	<property name="defautControlReceptionDAO" ref="defautControlReceptionDAO"></property>
+	</bean>
+	
+	<!-- fournisseur -->
+	<bean id="fournisseurDAO" class="com.dao.FournisseurDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="fournisseurService" class="com.service.FournisseurServiceImpl">
+	<property name="fournisseurDAO" ref="fournisseurDAO"></property>
+	</bean>
+	
+	<!-- alert -->
+	<bean id="alertDAO" class="com.dao.AlertDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="alertService" class="com.service.AlertServiceImpl">
+	<property name="alertDAO" ref="alertDAO"></property>
+	</bean>
+	
+	<!-- zone40F -->
+	<bean id="zone40FDAO" class="com.dao.Zone40FDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="zone40FService" class="com.service.Zone40FServiceImpl">
+	<property name="zone40FDAO" ref="zone40FDAO"></property>
+	</bean>
+	
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+	
+<!-- 	<mvc:interceptors> -->
+<!-- 	<mvc:interceptor> -->
+<!-- 		<mvc:mapping path="users/verefication"/> -->
+<!-- 		<bean class="com.interceptor.AuthenticationInterceptor" /> -->
+<!-- 	</mvc:interceptor> -->
+	
+<!--      </mvc:interceptors>  -->
+     
+
+	
+	
+	    <mvc:annotation-driven />
+	    <mvc:resources mapping="/css/**" location="/WEB-INF/resources/css/"/>
+	    <mvc:resources mapping="/js/**"  location="/WEB-INF/resources/js/"/>
+	    <mvc:resources mapping="/fonts/**" location="/WEB-INF/resources/fonts/"/>
+	    <mvc:resources mapping="/images/**" location="/WEB-INF/resources/images/"/>
+	    
+	</beans>
