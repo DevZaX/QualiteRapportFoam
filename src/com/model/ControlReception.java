@@ -48,7 +48,7 @@ public class ControlReception {
 	
 	private int qte_nonConfortable;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OneToMany(mappedBy="controlReception",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER,orphanRemoval=true)
 	private List<DefautControlReception> defautControlReceptions = new ArrayList<>();
 	
 	private String username;

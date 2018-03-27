@@ -58,14 +58,22 @@
   					<th></th>
   				</thead>
   				<tbody>
-  					<tr><td>start date:</td><td><input type="date"></td></tr>
-  					<tr><td>end date:</td><td><input type="date"></td></tr>
+  				     <p>Date d'aujourd'hui ${currentDate}</p>
+  					<tr><td>start date:</td><td><input type="date" value="${currentDate }"></td></tr>
+  					<tr><td>end date:</td><td><input type="date" value="${currentDate }"></td></tr>
   					<tr><td><select><option>C20&C22&TT30</option></select></td></tr>
   					<tr><td><select><option>A&B&C</option></select></td></tr>
   					<tr><td><select><option>Serie</option></select></td></tr>
   					
   				</tbody>
   			</table>
+  			
+  			<table class="table table-bordered" style="margin-top:64px;">
+  		    	<tbody>
+  		    	<tr><td>Global Scrap :</td><td>0.61</td></tr>
+  		    	<tr><td>Global RFT :</td><td> 87.06</td></tr>
+  		    	</tbody>
+  		    </table>
   		</div>	 
   		
   		<div class="col-md-4">
@@ -74,11 +82,63 @@
   		</div>
   		
   		<div class="col-md-4">
-  			<p>Global Scrap : 0.61</p>
-  			<p>Global RFT : 87.06 </p>
+  		    
+  			
   		</div>
   		
   </div>
+  </div>
+  
+  <div class="container">
+  
+  <table class="table table-bordered">
+  <thead>
+  	<th style="background-color:#26B99A;color:white;">Project</th>
+  	<th style="background-color:#26B99A;color:white;">Family</th>
+  	<th style="background-color:#26B99A;color:white;">Total Controlled</th>
+  	<th style="background-color:#26B99A;color:white;">Qty accepted</th>
+  	<th style="background-color:#26B99A;color:white;">Qty rejected</th>
+  	
+  	<th style="background-color:#26B99A;color:white;">Qty reworked</th>
+  	<th style="background-color:#26B99A;color:white;">Scrap rate %</th>
+  	<th style="background-color:#26B99A;color:white;">RFT %</th>
+  	<th style="background-color:#26B99A;color:white;">Taux de retouche %</th>
+  	<th style="background-color:#26B99A;color:white;">IPPM</th>
+  	
+  	<th style="background-color:#26B99A;color:white;">Scrap cost % </th>
+  	<th style="background-color:#26B99A;color:white;">Avg price</th>
+  	<th style="background-color:#26B99A;color:white;">Total cost</th>
+  	<th style="background-color:#26B99A;color:white;">Scrap cost</th>
+  	<th style="background-color:#26B99A;color:white;">Total chemicals weight (kg)</th>
+  	<th style="background-color:#26B99A;color:white;">Total chemicals price ($)</th>
+
+  </thead>
+  
+  <tbody>
+     <tr>
+     <td>A515</td>
+     <td>FA51</td>
+     <td>428</td>
+     <td>425</td>
+     <td>3</td>
+     
+     <td>102</td>
+     <td>0.7%</td>
+     <td>75.4%</td>
+     <td>82%</td>
+     <td>6504</td>
+     
+     <td>0.7%</td>
+     <td>6 &euro;</td>
+     <td>2000 &euro;</td>
+     <td>18.6 &euro;</td>
+     <td>88 kg</td>
+     <td>102 $</td>
+
+     </tr>
+  </tbody>
+  </table>
+  
   </div>
   
                 

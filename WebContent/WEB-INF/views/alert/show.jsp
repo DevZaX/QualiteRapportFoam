@@ -47,11 +47,11 @@
               	<p>Type : <c:out value="${alert.getType() }"></c:out></p>
               	<p>Status : <c:out value="${alert.getStatus() }"></c:out></p>
                 <p>Phase : <c:out value="${alert.getPhase() }"></c:out></p>
-                <p>Chargeback : <c:out value="${alert.getChargeback() }"></c:out> €</p>
+                <p>Chargeback : <c:out value="${alert.getChargeback() }"></c:out> &euro;</p>
                 <a href="../../alerts/<c:out value="${alert.getNumero() }"></c:out>/close" class="btn btn-success">Close</a>
                 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="fa fa-pencil"></i></button>
-                
+                <a class="btn btn-warning" href="../../zone40f/<c:out value="${alert.getNumero() }"></c:out>/show">crieer une mouvement 40F</a>
               </div>
                     
                   </div>

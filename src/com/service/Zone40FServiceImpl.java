@@ -29,4 +29,22 @@ public class Zone40FServiceImpl implements Zone40FService {
 	zone40FDAO.save(zone40F);	
 	}
 
+
+
+	@Override
+	@Transactional
+	public void update(Zone40F zone40f) {
+		zone40FDAO.update(zone40f);
+		
+	}
+
+
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		zone40FDAO.delete(id);
+		
+	}
+
 }

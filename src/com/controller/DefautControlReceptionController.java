@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.model.ControlReception;
 import com.model.DefautControlReception;
@@ -118,6 +119,7 @@ public class DefautControlReceptionController {
 	}
 	
 	@RequestMapping(value="defaut_controle_reception/{id}/delete",method=RequestMethod.GET)
+	
 	public String destroy(@PathVariable("id")Long id,Principal p)
 	{
 		List<String> roles = new ArrayList<>();
@@ -136,11 +138,11 @@ public class DefautControlReceptionController {
 		}
 		
 		DefautControlReception defautControlReception = defautControlReceptionService.find(id);
-		ControlReception controlReception = defautControlReception.getControlReception();
-		List<DefautControlReception> defautControlReceptions = controlReception.getDefautControlReceptions();
-		defautControlReceptions.remove(defautControlReception);
-		controlReception.getDefautControlReceptions().clear();
-		controlReception.setDefautControlReceptions(defautControlReceptions);
+		
+		
+		defautControlReception.getControlReception().getDefautControlReceptions().remove(defautControlReception);
+		
+		
 		
 		
 		return "redirect:create";
