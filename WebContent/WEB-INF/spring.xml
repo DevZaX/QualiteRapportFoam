@@ -31,7 +31,7 @@
 		<property name="url"
 			value="jdbc:sqlserver://localhost:1433;databaseName=moi" />
 		<property name="username" value="aboud" />
-		<property name="password" value="18810320" />
+		<property name="password" value="18810320nokia" />
 	</bean>
 	
 	<bean id="hibernate4AnnotatedSessionFactory"
@@ -59,6 +59,7 @@
 				<value>com.model.Alert</value>
 				<value>com.model.Zone40F</value>
 				<value>com.model.DefautControl</value>
+				<value>com.model.DefautControlMur</value>
 				
 			</list>
 		</property>
@@ -159,6 +160,14 @@
 	</bean>
 	<bean id="defautControlService" class="com.service.DefautControlServiceImpl">
 		<property name="defautControlDAO" ref="defautControlDAO"></property>
+	</bean>
+	
+	<!-- defautControlMur -->
+	<bean id="defautControlMurDAO" class="com.dao.DefautControlMurDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="defautControlMurService" class="com.service.DefautControlMurServiceImpl">
+		<property name="defautControlMurDAO" ref="defautControlMurDAO"></property>
 	</bean>
 	
 	<!-- empiecement -->

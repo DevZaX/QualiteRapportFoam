@@ -1,10 +1,12 @@
 package com.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,8 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Proxy;
 
 @Entity
+@Proxy(lazy=false)
 public class ControlMur {
 	
 	@Id
@@ -21,19 +28,15 @@ public class ControlMur {
 	private Long id;
     
 
-    @OneToOne
-	private Defaut defautControlMur;
+    @OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	private List<DefautControlMur> defautControlMurs = new ArrayList<>();
 	
 	
-    
+    @Temporal(TemporalType.DATE)
     private Date date;
     private String matricule;
     private String ref;
-    private int qteControle;
-    private int qteAccepter;
-    private int qteRetouche;
-    private int qteRejete;
-    private int tauxDefaut;
+   
     private String shift;
     private String zone;
     private String prototype;
@@ -54,11 +57,12 @@ public class ControlMur {
 	}
 
 	
-	public Defaut getDefautControlMur() {
-		return defautControlMur;
+	
+	public List<DefautControlMur> getDefautControlMurs() {
+		return defautControlMurs;
 	}
-	public void setDefautControlMur(Defaut defautControlMur) {
-		this.defautControlMur = defautControlMur;
+	public void setDefautControlMurs(List<DefautControlMur> defautControlMurs) {
+		this.defautControlMurs = defautControlMurs;
 	}
 	public String getMatricule() {
 		return matricule;
@@ -72,36 +76,7 @@ public class ControlMur {
 	public void setRef(String ref) {
 		this.ref = ref;
 	}
-	public int getQteControle() {
-		return qteControle;
-	}
-	public void setQteControle(int qteControle) {
-		this.qteControle = qteControle;
-	}
-	public int getQteAccepter() {
-		return qteAccepter;
-	}
-	public void setQteAccepter(int qteAccepter) {
-		this.qteAccepter = qteAccepter;
-	}
-	public int getQteRetouche() {
-		return qteRetouche;
-	}
-	public void setQteRetouche(int qteRetouche) {
-		this.qteRetouche = qteRetouche;
-	}
-	public int getQteRejete() {
-		return qteRejete;
-	}
-	public void setQteRejete(int qteRejete) {
-		this.qteRejete = qteRejete;
-	}
-	public int getTauxDefaut() {
-		return tauxDefaut;
-	}
-	public void setTauxDefaut(int tauxDefaut) {
-		this.tauxDefaut = tauxDefaut;
-	}
+	
 	public String getShift() {
 		return shift;
 	}

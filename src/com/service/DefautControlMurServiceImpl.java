@@ -6,18 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.DefautControlDAO;
+import com.dao.DefautControlMurDAO;
 import com.index.DefautInjectionIndex;
 import com.model.Defaut;
 import com.model.DefautControl;
+import com.model.DefautControlMur;
 
-public class DefautControlServiceImpl implements DefautControlService {
+public class DefautControlMurServiceImpl implements DefautControlMurService {
 	
 	
-	private DefautControlDAO defautControlDAO;
+	private DefautControlMurDAO defautControlDAO;
 	
 	
 	@Autowired
-	public void setDefautControlDAO(DefautControlDAO defautControlDAO) {
+	public void setDefautControlMurDAO(DefautControlMurDAO defautControlDAO) {
 		this.defautControlDAO = defautControlDAO;
 	}
 
@@ -26,7 +28,7 @@ public class DefautControlServiceImpl implements DefautControlService {
 
 	@Override
 	@Transactional
-	public void addDefautControl(DefautControl defautControl) {
+	public void addDefautControl(DefautControlMur defautControl) {
 		
 		defautControlDAO.addDefautControl(defautControl);
 	}
@@ -49,7 +51,7 @@ public class DefautControlServiceImpl implements DefautControlService {
 
 	@Override
 	@Transactional
-	public void update(DefautControl dc) {
+	public void update(DefautControlMur dc) {
 		
 		defautControlDAO.update(dc);
 		
@@ -60,7 +62,7 @@ public class DefautControlServiceImpl implements DefautControlService {
 
 	@Override
 	@Transactional
-	public DefautControl getDefautControlByControlIdAndTypeAndCode(Long id, String type,String code) {
+	public DefautControlMur getDefautControlByControlIdAndTypeAndCode(Long id, String type,String code) {
 		return defautControlDAO.getDefautControlByControlIdAndTypeAndCode(id, type,code);
 	}
 

@@ -88,28 +88,43 @@ public class ControlInjectionController {
 	
 	
 
-	@RequestMapping(value="controle_injection/store",method=RequestMethod.GET)
-	public String store(@RequestParam("ref")String ref,
+	@RequestMapping(value="controle_injection/storeRetouche",method=RequestMethod.POST)
+	public String storeRetouche(@RequestParam("ref")String ref,
 			@RequestParam("qte")int qte,
 			@RequestParam("code")String code,
 			@RequestParam("type")String type,
-			@RequestParam("title")String title) throws ParseException
+			@RequestParam("title")String title,
+			RedirectAttributes redirectAttributes) throws ParseException
 	{
 		Date startDate = new Date();
 		Date endDate = new Date();
-		ControlInjection cc = controlInjectionService.fetchAll(startDate, endDate, "12");
-		
+		ControlInjection cc = controlInjectionService.fetchAll(startDate, endDate, ref);
 		if(cc != null)
 		{
-			 DefautControl defautControl = new DefautControl();
-			 defautControl.setCode(code);
-			 defautControl.setTitle(title);
-			 defautControl.setType(type);
-			 defautControl.setQte(qte);
-			 defautControl.setControl(cc);
-			 cc.getDefauts().add(defautControl);
-			 defautControlService.addDefautControl(defautControl);
-		}else {
+			
+				DefautControl dc = defautControlService.getDefautControlByControlIdAndTypeAndCode(cc.getId(),type,code);
+				if(dc != null)
+				{
+					dc.setQte(qte);
+					defautControlService.update(dc);
+				}
+				else
+				{
+					 DefautControl defautControl = new DefautControl();
+					 defautControl.setCode(code);
+					 defautControl.setTitle(title);
+					 defautControl.setType(type);
+					 defautControl.setQte(qte);
+					 defautControl.setControl(cc);
+					 cc.getDefauts().add(defautControl);
+					 defautControlService.addDefautControl(defautControl);
+				}
+				
+			
+			
+		}
+
+		else {
 			ControlInjection c = new ControlInjection();
 			
 			 c.setDate(new Date());
@@ -120,7 +135,7 @@ public class ControlInjectionController {
 			 c.setMatriculeE("ZAKARIAEE");
 			 c.setShift("matin");
 			 c.setZone("TT30");
-			 c.setRef("12");
+			 c.setRef(ref);
 			 
 			 
 			 
@@ -139,10 +154,86 @@ public class ControlInjectionController {
 		
 		 
         
-		 
+		 redirectAttributes.addFlashAttribute("ref",ref);
+		 redirectAttributes.addFlashAttribute("entre",true);
 		 
 		
-		return "redirect:/controle_injection/index";
+		return "redirect:/test/2";
+		
+	}
+	
+	@RequestMapping(value="controle_injection/storeScrap",method=RequestMethod.POST)
+	public String storeScrap(@RequestParam("ref")String ref,
+			@RequestParam("qte")int qte,
+			@RequestParam("code")String code,
+			@RequestParam("type")String type,
+			@RequestParam("title")String title,
+			RedirectAttributes redirectAttributes) throws ParseException
+	{
+		Date startDate = new Date();
+		Date endDate = new Date();
+		ControlInjection cc = controlInjectionService.fetchAll(startDate, endDate, ref);
+		if(cc != null)
+		{
+			
+				DefautControl dc = defautControlService.getDefautControlByControlIdAndTypeAndCode(cc.getId(),type,code);
+				if(dc != null)
+				{
+					dc.setQte(qte);
+					defautControlService.update(dc);
+				}
+				else
+				{
+					 DefautControl defautControl = new DefautControl();
+					 defautControl.setCode(code);
+					 defautControl.setTitle(title);
+					 defautControl.setType(type);
+					 defautControl.setQte(qte);
+					 defautControl.setControl(cc);
+					 cc.getDefauts().add(defautControl);
+					 defautControlService.addDefautControl(defautControl);
+				}
+				
+			
+			
+		}
+
+		else {
+			ControlInjection c = new ControlInjection();
+			
+			 c.setDate(new Date());
+			 c.setEquipe("A");
+			 c.setMatricule("AAA");
+			 c.setPrototype("serie");
+			 c.setMatricule("ZAKARIAE");
+			 c.setMatriculeE("ZAKARIAEE");
+			 c.setShift("matin");
+			 c.setZone("TT30");
+			 c.setRef(ref);
+			 
+			 
+			 
+			 controlInjectionService.addControlInjection(c);
+			 
+			 DefautControl defautControl = new DefautControl();
+			 defautControl.setCode(code);
+			 defautControl.setTitle(title);
+			 defautControl.setType(type);
+			 defautControl.setQte(qte);
+			 defautControl.setControl(c);
+			 c.getDefauts().add(defautControl);
+			 defautControlService.addDefautControl(defautControl);
+		}
+		
+		
+		 
+        
+		 redirectAttributes.addFlashAttribute("ref",ref);
+		 
+		 redirectAttributes.addFlashAttribute("entre",true);
+		 
+		
+		return "redirect:/test/2";
 		
 	}
 	
@@ -209,6 +300,8 @@ public class ControlInjectionController {
 	public String getControlInjectionByRefAndDate(@RequestParam("ref")String ref,
 			RedirectAttributes redirectAttributes)
 	{
+		List<Object> objects1  = new ArrayList<>();
+		List<Object> objects2 = new ArrayList<>();
 		List<Defaut> defauts = defautService.listDefaut();
 		List<DefautInjectionVue> defautInjectionVues = new ArrayList<>();
 		for (Defaut d : defauts) {
@@ -224,27 +317,22 @@ public class ControlInjectionController {
      	Date endDate = new Date();
 		ControlInjection controlInjection = controlInjectionService.fetchAll(startDate,endDate,ref.toUpperCase());
 		
-		redirectAttributes.addFlashAttribute("ref",controlInjection.getRef());
+		if(controlInjection != null) {
+			redirectAttributes.addFlashAttribute("ref",controlInjection.getRef());
+			objects1 = defautControlService.getQteAndCodeByType(controlInjection.getId(), "Retouche") ;
+			objects2 = defautControlService.getQteAndCodeByType(controlInjection.getId(), "Scrap") ;
+		}else {
+			redirectAttributes.addFlashAttribute("ref",ref);
+		}
 		
-	
-		List<Object> objects1 = defautControlService.getQteAndCodeByType(controlInjection.getId(), "Retouche") ;
-		List<Object> objects2 = defautControlService.getQteAndCodeByType(controlInjection.getId(), "Scrap") ;
-		
-		if(objects1 == null && objects1 == null) {
-			redirectAttributes.addFlashAttribute("defautInjectionVues",null);
-		}if(objects1 == null && objects2 != null) {
+
+		if(objects1.size() == 0 && objects2.size() == 0) {
+			redirectAttributes.addFlashAttribute("defautInjectionVues",defautInjectionVues);
+		}if(objects1.size() == 0 && objects2.size() != 0) {
 			
-			
-			
-			Iterator it2 = objects2.iterator();
-			
-			
-		
-				
-			
-			
-		    
+
 			for (DefautInjectionVue d : defautInjectionVues) {
+				Iterator it2 = objects2.iterator();
 				while (it2.hasNext()) {
 					Object[] object = (Object[]) it2.next();
 					if(d.getCode().equals((String)object[1])) {
@@ -258,15 +346,18 @@ public class ControlInjectionController {
 		
 			
 			redirectAttributes.addFlashAttribute("defautInjectionVues",defautInjectionVues);
-		}if(objects1 != null && objects2 == null) {
+		}if(objects1.size() != 0 && objects2.size() == 0) {
 			
-			Iterator it1 = objects1.iterator();
+			
 
 			for (DefautInjectionVue d : defautInjectionVues) {
+				Iterator it1 = objects1.iterator();
 				while (it1.hasNext()) {
 					Object[] object = (Object[]) it1.next();
+					
 					if(d.getCode().equals((String)object[1])) {
 						d.setQteR((int)object[0]);
+						
 					}
 					
 				}
@@ -275,17 +366,11 @@ public class ControlInjectionController {
 
 			redirectAttributes.addFlashAttribute("defautInjectionVues",defautInjectionVues);
 			
-		}if(objects1 != null && objects2 != null) {
+		}if(objects1.size() != 0 && objects2.size() != 0) {
 			
-			
-			Iterator it1 = objects1.iterator();
-			Iterator it2 = objects2.iterator();
-			
-			
-		
-				
-			    
+
 			for (DefautInjectionVue d : defautInjectionVues) {
+				Iterator it1 = objects1.iterator();
 				while (it1.hasNext()) {
 					Object[] object = (Object[]) it1.next();
 					if(d.getCode().equals((String)object[1])) {
@@ -295,8 +380,8 @@ public class ControlInjectionController {
 				}
 			}
 			
-		    
 			for (DefautInjectionVue d : defautInjectionVues) {
+				Iterator it2 = objects2.iterator();
 				while (it2.hasNext()) {
 					Object[] object = (Object[]) it2.next();
 					if(d.getCode().equals((String)object[1])) {
@@ -306,9 +391,8 @@ public class ControlInjectionController {
 				}
 			}
 			
-
-		
-			
+              
+            
 			redirectAttributes.addFlashAttribute("defautInjectionVues",defautInjectionVues);
 			
 		}

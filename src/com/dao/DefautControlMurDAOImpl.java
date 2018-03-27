@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.index.DefautInjectionIndex;
 import com.model.DefautControl;
+import com.model.DefautControlMur;
 
-public class DefautControlDAOImpl implements DefautControlDAO {
+public class DefautControlMurDAOImpl implements DefautControlMurDAO {
 	
 	
 	private SessionFactory sessionFactory;
@@ -27,7 +28,7 @@ public class DefautControlDAOImpl implements DefautControlDAO {
 
 
 	@Override
-	public void addDefautControl(DefautControl defautControl) {
+	public void addDefautControl(DefautControlMur defautControl) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.save(defautControl);
@@ -38,7 +39,7 @@ public class DefautControlDAOImpl implements DefautControlDAO {
 	@Override
 	public List<Object> getQteAndCodeByType(Long id, String type) {
 		Session session = sessionFactory.getCurrentSession();
-		SQLQuery sqlQuery = session.createSQLQuery("select sum(qte) as qte,code from DefautControl where control_id=:id and type=:type group by code");
+		SQLQuery sqlQuery = session.createSQLQuery("select sum(qte) as qte,code from DefautControlMur where control_id=:id and type=:type group by code");
 		sqlQuery.setParameter("id", id);
 		sqlQuery.setParameter("type", type);
 		return sqlQuery.list();
@@ -48,19 +49,19 @@ public class DefautControlDAOImpl implements DefautControlDAO {
 
 
 	@Override
-	public DefautControl getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code) {
+	public DefautControlMur getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code) {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from DefautControl where control_id = :id and type = :type and code = :code");
+		Query query = session.createQuery("from DefautControlMur where control_id = :id and type = :type and code = :code");
 		query.setParameter("id", id);
 		query.setParameter("type", type);
 		query.setParameter("code", code);
-		return (DefautControl) query.uniqueResult();
+		return (DefautControlMur) query.uniqueResult();
 	}
 
 
 
 	@Override
-	public void update(DefautControl dc) {
+	public void update(DefautControlMur dc) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.update(dc);

@@ -16,7 +16,7 @@ import org.hibernate.annotations.Proxy;
 
 @Entity
 @Proxy(lazy=false)
-public class DefautControl {
+public class DefautControlMur {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -51,7 +51,7 @@ public class DefautControl {
 
 	
 	@ManyToOne(cascade=CascadeType.ALL)
-	private ControlInjection control;
+	private ControlMur control;
 
 	public String getCode() {
 		return code;
@@ -69,22 +69,22 @@ public class DefautControl {
 		this.title = title;
 	}
 
-	public ControlInjection getControl() {
+	public ControlMur getControl() {
 		return control;
 	}
 
-	public void setControl(ControlInjection control) {
+	public void setControl(ControlMur control) {
 		this.control = control;
 	}
 
-	public DefautControl(String code, String title, ControlInjection control) {
+	public DefautControlMur(String code, String title, ControlMur control) {
 		super();
 		this.code = code;
 		this.title = title;
 		this.control = control;
 	}
 
-	public DefautControl() {
+	public DefautControlMur() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

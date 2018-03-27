@@ -6,11 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.index.DefautInjectionIndex;
 import com.model.DefautControl;
+import com.model.DefautControlMur;
 
 @Service
-public interface DefautControlService {
+public interface DefautControlMurService {
 
-	public void addDefautControl(DefautControl defautControl);
+	public void addDefautControl(DefautControlMur defautControl);
 	
 	/**
 	 * 
@@ -20,8 +21,8 @@ public interface DefautControlService {
 	 */
 	public List<Object> getQteAndCodeByType(Long id,String type);
 	
-	public DefautControl getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code);
+	public DefautControlMur getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code);
 
-	public void update(DefautControl dc);
+	public void update(DefautControlMur dc);
 
 }

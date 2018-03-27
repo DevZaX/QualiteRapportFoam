@@ -14,5 +14,9 @@ public interface DefautControlDAO {
 	public void addDefautControl(DefautControl defautControl);
 
 	public List<Object> getQteAndCodeByType(Long id, String type);
+	
+	public DefautControl getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code);
+
+	public void update(DefautControl dc);
 
 }
