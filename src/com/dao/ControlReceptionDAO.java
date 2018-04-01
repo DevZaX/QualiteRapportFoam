@@ -17,4 +17,6 @@ public interface ControlReceptionDAO {
 
 	public void delete(Long num);
 
+	public void update(ControlReception controlReception);
+
 }

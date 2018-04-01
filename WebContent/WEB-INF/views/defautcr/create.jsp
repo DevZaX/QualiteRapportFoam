@@ -55,6 +55,7 @@
                  		<th>defaut</th>
                  		<th>quantite</th>
                  		<th><button type="submit" class="btn btn-success"><i class="fa fa-save"></i></button></th>
+                 		<th><a href="../../controlR/index" class="btn btn-success"><i class="fa fa-arrow-left"></i></a></th> 
                  	</thead>
                  	<tbody>
                  	<tr>
@@ -84,12 +85,14 @@
                    				</thead>
                    				<tbody>
                    				<c:forEach items="${ defautControlReceptions}" var="e">
+                   				<c:if test="${e.getEtat() != 0 }">
                    				<tr>
                    					<td><c:out value="${e.getCode() }"></c:out></td>
                    					<td><c:out value="${e.getTitle() }"></c:out></td>
                    					<td><c:out value="${e.getQte() }"></c:out></td>
                    					<td><a onclick="return confirm('voulez vous supprimer cette defaut?')" class="btn btn-danger" href="../${ e.getId()}/delete"><i class="fa fa-trash"></i></a></td>
                    				<tr>
+                   				</c:if>
                    				</c:forEach>	
                    				</tbody>
                    			</table>

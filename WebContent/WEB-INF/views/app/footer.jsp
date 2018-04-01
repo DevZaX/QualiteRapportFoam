@@ -24,14 +24,24 @@
     <!-- NProgress -->
     <script src="<c:url value='/js/nprogress.js' />"></script>
     
+    <!--  raphael-min.js -->
+    <script src="<c:url value='/js/raphael-min.js' />"></script>
     
     
+     <!-- Morris js -->
+    <script src="<c:url value='/js/morris.js' />"></script>
     
     
     <!-- Custom Theme Scripts -->
     <script src="<c:url value='/js/custom.min.js' />"></script>
+     
      <script>
-        $('#data').DataTable();
+       var table =  $('#data').DataTable();
+     // Apply the search
+        table.columns().every( function () {
+            var that = this;
+     
+                  } );
         </script>
          <script>
             

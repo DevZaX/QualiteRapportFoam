@@ -67,4 +67,13 @@ public class ControlReceptionDAOImpl implements ControlReceptionDAO {
 		
 	}
 
+
+
+	@Override
+	public void update(ControlReception controlReception) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(controlReception);
+		
+	}
+
 }

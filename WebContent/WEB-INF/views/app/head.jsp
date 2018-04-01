@@ -27,4 +27,7 @@
     <link href="<c:url value='/css/custom.min.css' />" rel="stylesheet">
     
     
+     <!-- Morris css -->
+    <link href="<c:url value='/css/morris.css' />" rel="stylesheet">
+    
   </head>

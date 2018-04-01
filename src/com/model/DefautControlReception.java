@@ -21,8 +21,18 @@ public class DefautControlReception {
 	
 	private String title;
 	
+	private int etat;
 	
-    public Long getId() {
+	
+    public int getEtat() {
+		return etat;
+	}
+
+	public void setEtat(int etat) {
+		this.etat = etat;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
@@ -40,6 +50,7 @@ public class DefautControlReception {
 		this.qte = qte;
 	}
 
+	@ManyToOne(cascade=CascadeType.ALL)
 	public ControlReception getControlReception() {
 		return controlReception;
 	}

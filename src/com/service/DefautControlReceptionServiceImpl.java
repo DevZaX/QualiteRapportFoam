@@ -44,4 +44,13 @@ public class DefautControlReceptionServiceImpl implements DefautControlReception
 		
 	}
 
+
+
+	@Override
+	@Transactional
+	public void update(DefautControlReception defautControlReception) {
+		
+		defautControlReceptionDAO.update(defautControlReception);
+	}
+
 }

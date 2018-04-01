@@ -15,6 +15,8 @@ public interface ControlReceptionService {
 	
 	public Alert getAlert(Long id);
 
-	public void delete(Long num);	
+	public void delete(Long num);
+
+	public void update(ControlReception controlReception);	
 
 }

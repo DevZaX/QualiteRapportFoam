@@ -10,7 +10,16 @@ public class ProjetIndex {
 	private double price;
 	private double priceAPPT;
 	private Long id;
+	private int etat;
 	
+	public int getEtat() {
+		return etat;
+	}
+
+	public void setEtat(int etat) {
+		this.etat = etat;
+	}
+
 	public ProjetIndex() {}
 
 	public String getTitle() {

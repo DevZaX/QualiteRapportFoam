@@ -87,53 +87,55 @@ public class ProjetController {
 			{
 				Projet p = new Projet();
 				p.setTitle(projetWrapper.getTitle());
+				
 				projetService.saveOrUpdateProjet(p);
 				
 				Famille f = new Famille();
 				f.setTitle(projetWrapper.getFamille());
-				f.setPrice(projetWrapper.getPrice());
-				f.setWeight(projetWrapper.getWeight());
+				
 				f.setProjet(p);
 				p.getFamilles().add(f);
 				familleService.save(f);
 				
 				
 				Piece pi = new Piece();
-				pi.setRef(projetWrapper.getRef());
+				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
-				pi.setPrice(projetWrapper.getPriceAPPT());
+				
 				pi.setFamille(f);
 				f.getPieces().add(pi);
 				pi.setFamille(f);
+				pi.setEtat(1);
 				pieceService.addPiece(pi);
 				
 			}else {
 				Famille f = new Famille();
 				f.setTitle(projetWrapper.getFamille());
-				f.setPrice(projetWrapper.getPrice());
-				f.setWeight(projetWrapper.getWeight());
+				
 				f.setProjet(pt);
 				pt.getFamilles().add(f);
 				familleService.save(f);
 				
 				
 				Piece pi = new Piece();
-				pi.setRef(projetWrapper.getRef());
+				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
-				pi.setPrice(projetWrapper.getPriceAPPT());
+				
 				pi.setFamille(f);
 				f.getPieces().add(pi);
 				pi.setFamille(f);
+				pi.setEtat(1);
 				pieceService.addPiece(pi);
 			}
 		}else {
 			Piece pi = new Piece();
-			pi.setRef(projetWrapper.getRef());
+			pi.setRef(projetWrapper.getRef().toUpperCase());
 			pi.setVersion(projetWrapper.getVersion());
-			pi.setPrice(projetWrapper.getPriceAPPT());
+			
 			pi.setFamille(ft);
 			ft.getPieces().add(pi);
 			pi.setFamille(ft);
+			pi.setEtat(1);
 			pieceService.addPiece(pi);
 		}
 		
@@ -169,16 +171,16 @@ public class ProjetController {
 				List<Piece> pieces = famille.getPieces();
 				for (Piece piece : pieces) {
 					
-					 ProjetIndex projetIndex = new ProjetIndex();
-					 projetIndex.setTitle(projet.getTitle());
-					 projetIndex.setFamille(famille.getTitle());
-					 projetIndex.setRef(piece.getRef());
-					 projetIndex.setVersion(piece.getVersion());
-					 projetIndex.setPrice(famille.getPrice());
-					 projetIndex.setWeight(famille.getWeight());
-					 projetIndex.setPriceAPPT(piece.getPrice());
-					 projetIndex.setId(projet.getId());
-					 items.add(projetIndex);
+					 if(piece.getEtat() == 1)
+					 {
+						 ProjetIndex projetIndex = new ProjetIndex();
+						 projetIndex.setTitle(projet.getTitle());
+						 projetIndex.setFamille(famille.getTitle());
+						 projetIndex.setRef(piece.getRef());
+						 projetIndex.setVersion(piece.getVersion());
+						 projetIndex.setId(projet.getId());
+						 items.add(projetIndex);
+					 }
 				}
 			}
 		}
@@ -193,8 +195,8 @@ public class ProjetController {
 	
 	
 	
-	@RequestMapping(value="projets/{id}/delete",method=RequestMethod.GET)
-	public String destroy(@PathVariable("id")Long id,Principal principal)
+	@RequestMapping(value="projets/{ref}/delete",method=RequestMethod.GET)
+	public String destroy(@PathVariable("ref")String ref,Principal principal)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -208,7 +210,11 @@ public class ProjetController {
 		{
 			return "denied";
 		}
-		projetService.delete(id);
+		Piece piece = pieceService.find(ref);
+		
+		piece.setEtat(0);
+		pieceService.update(piece);
+		
 		return "redirect:/projets/index";
 	}
 	

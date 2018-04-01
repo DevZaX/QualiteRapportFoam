@@ -36,7 +36,7 @@ public class ZoneDAOImpl implements ZoneDAO {
 	public List<Zone> listZone() {
 		Session session = sessionFactory.getCurrentSession();
 		List<Zone> zones = new ArrayList<>();
-		zones = session.createQuery("from Zone").list();
+		zones = session.createQuery("from Zone order By id DESC").list();
 		return zones;
 	}
 

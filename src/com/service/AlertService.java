@@ -13,5 +13,6 @@ public interface AlertService {
 	public void update(Alert alert);
 	public List<Alert> fetchAll();
 	public void delete(Long num);
+	public List<Alert> fetchAllOpen();
 
 }

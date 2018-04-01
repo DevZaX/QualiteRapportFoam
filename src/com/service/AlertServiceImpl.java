@@ -75,4 +75,12 @@ public class AlertServiceImpl implements AlertService {
 		
 	}
 
+
+
+	@Override
+	@Transactional
+	public List<Alert> fetchAllOpen() {
+		return alertDAO.fetchAllOpen();
+	}
+
 }

@@ -9,9 +9,7 @@ public class ProjetWrapper {
 	private String ref;
 	private String version;
 	
-	private Double weight;
-	private Double price;
-	private Double priceAPPT;
+	
 	
 	public ProjetWrapper() {	
 	}
@@ -49,29 +47,6 @@ public class ProjetWrapper {
 		this.version = version;
 	}
 
-	public Double getWeight() {
-		return weight;
-	}
-
-	public void setWeight(Double weight) {
-		this.weight = weight;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public Double getPriceAPPT() {
-		return priceAPPT;
-	}
-
-	public void setPriceAPPT(Double priceAPPT) {
-		this.priceAPPT = priceAPPT;
-	}
 	
 	
 

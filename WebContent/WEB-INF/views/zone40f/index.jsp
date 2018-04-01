@@ -75,6 +75,39 @@
                 	</table>
                 	</form>
                 </div>
+                <br>
+                 <div class="container">
+              	<table id="data" class="table table-bordered spacer3">
+              		<thead>
+              			<th style="background-color:#26B99A;color:white;">Numero d'alert</th>
+              			<th style="background-color:#26B99A;color:white;">Date de mouvement</th>
+              			<th style="background-color:#26B99A;color:white;">Quantité</th>
+              			<th style="background-color:#26B99A;color:white;">id_mgz</th>
+              			<th style="background-color:#26B99A;color:white;">emplacement</th>
+              			<th style="background-color:#26B99A;color:white;">Date de sortie</th>
+              			<th></th>
+              		</thead>
+              		<tbody>
+              			<c:forEach items="${ zone40fs}" var="e">
+              				<tr>
+              					<td><c:out value="${e.getAlert() }"></c:out></td>
+              					<td><c:out value="${e.getDate_mouvement() }"></c:out></td>
+              					<td><c:out value="${e.getQte() }"></c:out></td>
+              					<td><c:out value="${e.getId_mgz() }"></c:out></td>
+              					<td><c:out value="${e.getEmplacement() }"></c:out></td>
+              					<td><c:out value="${e.getDate_sortie() }"></c:out></td>
+              					<td>
+              						<a onclick="return confirm('voulez vous supprimer cette donnée ?')" class="btn btn-danger" href="../../zone40f/${ e.getId()}/delete"><i class="fa fa-trash"></i></a>
+              						<c:if test="${e.getDate_sortie() == null }">
+              						<a class="btn btn-danger" href="../../zone40f/${ e.getId()}/close"><i class="fa fa-close"></i></a>
+              						</c:if>
+              						<a href="../../zone40f/${e.getId() }/edit" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+              					</td>
+              				</tr>
+              			</c:forEach>
+              		</tbody>
+              	</table>
+              </div>
       
                 
                   </div>

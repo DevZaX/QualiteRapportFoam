@@ -20,7 +20,17 @@ public class Piece {
 	
 	private Double price;
 	
+	private int etat;
 	
+	
+	public int getEtat() {
+		return etat;
+	}
+
+	public void setEtat(int etat) {
+		this.etat = etat;
+	}
+
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Famille famille;
 	

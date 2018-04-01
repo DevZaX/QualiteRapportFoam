@@ -65,12 +65,10 @@ public class ProjetDAOImpl implements ProjetDAO {
 	@Override
 	public void delete(Long id) {
 		
-		Session session = sessionFactory.getCurrentSession();
-		Projet projet = getProjetById(id);
-		if(projet != null)
-		{
-			session.delete(projet);
-		}
+		    Session session = sessionFactory.getCurrentSession();
+			Query query = session.createQuery("update Projet set etat=0 where id=:id");
+			query.setParameter("id", id);
+		
 	}
 	
 	

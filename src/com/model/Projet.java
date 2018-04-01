@@ -30,6 +30,16 @@ public class Projet {
 	
 	private String title;
 
+	
+	
+	
+	
+
+	
+	public void setFamilles(List<Famille> familles) {
+		this.familles = familles;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -42,10 +52,7 @@ public class Projet {
 		return familles;
 	}
 
-	public void setFamilles(List familles) {
-		this.familles = familles;
-	}
-
+	
 	public String getTitle() {
 		return title;
 	}

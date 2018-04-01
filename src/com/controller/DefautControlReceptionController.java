@@ -4,7 +4,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,20 +36,24 @@ public class DefautControlReceptionController {
 	
 	
 	@Autowired
+	@Qualifier(value="defautReceptionService")
 	public void setDefautReceptionService(DefautReceptionService defautReceptionService) {
 		this.defautReceptionService = defautReceptionService;
 	}
 	
 	
 	@Autowired
+	@Qualifier(value="utilisateurService")
 	public void setUtilisateurService(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
 	}
 	@Autowired
+	@Qualifier(value="controlReceptionService")
 	public void setControlReceptionService(ControlReceptionService controlReceptionService) {
 		this.controlReceptionService = controlReceptionService;
 	}
 	@Autowired
+	@Qualifier(value="defautControlReceptionService")
 	public void setDefautControlReceptionService(DefautControlReceptionService defautControlReceptionService) {
 		this.defautControlReceptionService = defautControlReceptionService;
 	}
@@ -83,7 +90,8 @@ public class DefautControlReceptionController {
 	@RequestMapping(value="defaut_controle_reception/{id}/store",method=RequestMethod.POST)
 	public String store(@PathVariable("id")Long id,Principal p,
 			@RequestParam("defaut")String defaut,
-			@RequestParam("qte")int qte)
+			@RequestParam("qte")int qte,
+			HttpServletRequest request)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -106,6 +114,7 @@ public class DefautControlReceptionController {
 		defautControlReception.setTitle(defaut);
 		defautControlReception.setCode(defautReception.getCode());
 		defautControlReception.setQte(qte);
+		defautControlReception.setEtat(1);
 		defautControlReception.setControlReception(controlReception);
 		
 		controlReception.getDefautControlReceptions().add(defautControlReception);
@@ -115,12 +124,12 @@ public class DefautControlReceptionController {
 		
 		
 		
-		return "redirect:create";
+		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping(value="defaut_controle_reception/{id}/delete",method=RequestMethod.GET)
 	
-	public String destroy(@PathVariable("id")Long id,Principal p)
+	public String destroy(@PathVariable("id")Long id,Principal p,HttpServletRequest request)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -139,13 +148,17 @@ public class DefautControlReceptionController {
 		
 		DefautControlReception defautControlReception = defautControlReceptionService.find(id);
 		
+
 		
-		defautControlReception.getControlReception().getDefautControlReceptions().remove(defautControlReception);
+		defautControlReception.setEtat(0);
+		
+	    defautControlReceptionService.update(defautControlReception);
 		
 		
 		
 		
-		return "redirect:create";
+		
+		return "redirect:"+request.getHeader("Referer");
 	}
 
 }

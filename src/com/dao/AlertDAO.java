@@ -19,4 +19,6 @@ public interface AlertDAO {
 
 	public void delete(Long num);
 
+	public List<Alert> fetchAllOpen();
+
 }

@@ -10,4 +10,6 @@ public interface DefautControlReceptionDAO {
 
 	public void delete(Long id);
 
+	public void update(DefautControlReception defautControlReception);
+
 }

@@ -62,4 +62,13 @@ public class ControlReceptionServiceImpl implements ControlReceptionService {
 		controlReceptionDAO.delete(num);
 	}
 
+
+
+	@Override
+	@Transactional
+	public void update(ControlReception controlReception) {
+		
+		controlReceptionDAO.update(controlReception);
+	}
+
 }

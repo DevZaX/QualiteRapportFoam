@@ -43,7 +43,7 @@
                     <ul class="nav child_menu">
                       <li><a href="../injection/index">Les controles d'injection</a></li>
                       <li><a href="../projets/index">Liste des references</a></li>
-                        <c:if test="${ ( utilisateur.getUtilisateurRoles().get(0).getRole() == 'Technicient qualite') || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Responsable qualite' ) || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Injenieur qualite')}">
+                        <c:if test="${ (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Technicient qualite') || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Responsable qualite' ) || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Injenieur qualite')}">
                       <li><a href="../zones/index">Les zones des robots</a></li>
                       </c:if>
                       <li><a href="../familles/index">Les prix et les poids des produits chimies</a></li>

@@ -10,7 +10,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Proxy;
+
 @Entity
+@Proxy(lazy=false)
 public class Zone40F {
 	
 	public Zone40F() {}
@@ -18,8 +21,10 @@ public class Zone40F {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@OneToOne
-	private Alert alert;
+	
+	
+	private long alert;
+	
 	@Temporal(TemporalType.DATE)
 	private Date date_mouvement;
 	@Temporal(TemporalType.DATE)
@@ -47,10 +52,11 @@ public class Zone40F {
 	public void setEmplacement(String emplacement) {
 		this.emplacement = emplacement;
 	}
-	public Alert getAlert() {
+	
+	public long getAlert() {
 		return alert;
 	}
-	public void setAlert(Alert alert) {
+	public void setAlert(long alert) {
 		this.alert = alert;
 	}
 	public Date getDate_mouvement() {

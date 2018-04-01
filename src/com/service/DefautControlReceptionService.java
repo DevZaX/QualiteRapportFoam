@@ -10,4 +10,6 @@ public interface DefautControlReceptionService {
 
 	public void delete(Long id);
 
+	public void update(DefautControlReception defautControlReception);
+
 }

@@ -53,10 +53,10 @@
                   <div class="x_content">
                   
      <div class="row">
-        <div class="col-md-6 col-md-offset-2">
+        <div class="col-md-12">
         <div>
         <form:form action="../empiecements/store" method="POST" modelAttribute="empiecement">
-     	<table class="table">
+     	<table class="table table-bordered">
      	    <c:if test="${utilisateur.getLangue() == 'francais' }">
      		<thead>
      			<th>ref</th>
@@ -69,11 +69,11 @@
      		
      		 <c:if test="${utilisateur.getLangue() == 'anglais' }">
      		<thead>
-     			<th>ref</th>
-     			<th>version</th>
-     			<th>supplier</th>
-     			<th>price</th>
-     			<th>project</th>
+     			<th style="width:100px;">ref</th>
+     			<th style="width:100px;">version</th>
+     			<th style="width:100px;">supplier</th>
+     			<th style="width:100px;">price</th>
+     			<th style="width:100px;">project</th>
      		</thead>
      		</c:if>
      		
@@ -107,7 +107,7 @@
      </div>
                 
                      
-                     <table class="table table-bordered">
+                     <table id="data"  class="table table-bordered">
                       <thead>
                         <tr>
                           <th>#</th>

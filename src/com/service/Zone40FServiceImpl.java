@@ -1,5 +1,7 @@
 package com.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,23 @@ public class Zone40FServiceImpl implements Zone40FService {
 	public void delete(Long id) {
 		zone40FDAO.delete(id);
 		
+	}
+
+
+
+	@Override
+	@Transactional
+	public List<Zone40F> fetchAll() {
+		return zone40FDAO.fetchAll();
+	}
+
+
+
+	@Override
+	@Transactional
+	public Zone40F find(Long id) {
+		
+		return zone40FDAO.find(id);
 	}
 
 }

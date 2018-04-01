@@ -49,4 +49,13 @@ public class DefautControlReceptionDAOImpl implements DefautControlReceptionDAO 
 		
 	}
 
+
+
+	@Override
+	public void update(DefautControlReception defautControlReception) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(defautControlReception);
+		
+	}
+
 }

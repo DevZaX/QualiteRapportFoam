@@ -56,32 +56,38 @@ public class ControlReceptionController {
 	}
 
 	@Autowired
+	@Qualifier(value="alertService")
     public void setAlertService(AlertService alertService) {
 		this.alertService = alertService;
 	}
 
 	@Autowired
+	@Qualifier(value="defautControlReceptionService")
 	public void setDefautControlReceptionService(DefautControlReceptionService defautControlReceptionService) {
 		this.defautControlReceptionService = defautControlReceptionService;
 	}
 
 	@Autowired
+	@Qualifier(value="defautReceptionService")
 	public void setDefautReceptionService(DefautReceptionService defautReceptionService) {
 		this.defautReceptionService = defautReceptionService;
 	}
 
 	@Autowired
+	@Qualifier(value="empiecementService")
 	public void setEmpiecementService(EmpiecementService empiecementService) {
 		this.empiecementService = empiecementService;
 	}
 
 	@Autowired
+	@Qualifier(value="controlReceptionService")
 	public void setControlReceptionService(ControlReceptionService controlReceptionService) {
 		this.controlReceptionService = controlReceptionService;
 	}
 	
 	
 	@Autowired
+	@Qualifier(value="emballageService")
 	public void setEmballageService(EmballageService emballageService) {
 		this.emballageService = emballageService;
 	}
@@ -121,17 +127,17 @@ public class ControlReceptionController {
 		    controlReception.setQte_nonConfortable(controlReceptionWrapper.getQte_nonConfortable());
 		    controlReception.setQte_planned(controlReceptionWrapper.getQte_planned());
 		    controlReception.setEmballage(emballage);
-		    controlReception.setUsername("test");
+		    controlReception.setUsername(p.getName());
 		    controlReceptionService.save(controlReception);
 		    
 		}
 
-		return "redirect:/controlR/create";
+		return "redirect:/controlR/index";
 	}
 	
 	
-	@RequestMapping(value="controlR/create",method=RequestMethod.GET)
-	public String create(ModelMap map,Principal p)
+	@RequestMapping(value="controlR/index",method=RequestMethod.GET)
+	public String index(ModelMap map,Principal p)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -184,7 +190,7 @@ public class ControlReceptionController {
 		}
 		map.addAttribute("utilisateur",u);
 		map.addAttribute("controlRIndexs",controlRIndexs);
-		return "controlR/create";
+		return "controlR/index";
 	}
 	
 	

@@ -1,7 +1,11 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.model.Alert;
 import com.model.ControlReception;
@@ -60,11 +65,14 @@ public class AlertController {
 			alert.setStatus("open");
 			alert.setType(type);
 			alertService.save(alert);
+			
 		}
-		return "redirect:/controlR/index";
+	return  "redirect:/controlR/index";
+		
 	}
 	
 	@RequestMapping(value="alerts/{num}/show",method=RequestMethod.GET)
+
 	public String show(@PathVariable("num")Long num,ModelMap map)
 	{
 		Alert alert = alertService.find(num);
@@ -72,6 +80,8 @@ public class AlertController {
 		map.addAttribute("alert",alert);
 		map.addAttribute("phases",phases);
 		return "alert/show";
+		
+
 	}
 
 	@RequestMapping(value="alerts/{num}/edit",method=RequestMethod.GET)
@@ -86,34 +96,52 @@ public class AlertController {
 	public String update(@RequestParam("numero")Long numero,
 			@RequestParam("phase")String phase,
 			@RequestParam("chargeback")Double chargeback,
-			@RequestParam("type")String type)
+			@RequestParam("type")String type,
+			HttpServletRequest request)
 	{
 		Alert alert = alertService.find(numero);
 		alert.setChargeback(chargeback);
 		alert.setPhase(phase);
 		alert.setType(type);
 		alertService.update(alert);
-		return "redirect:..";
+		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	
 	
 	@RequestMapping(value="alerts/{num}/close",method=RequestMethod.GET)
-	public String close(@PathVariable("num")Long numero)
+	public String close(@PathVariable("num")Long numero,HttpServletRequest request)
 	{
 		Alert alert = alertService.find(numero);
 		alert.setStatus("close");
 		alert.setDate_close(new Date());
 		alertService.update(alert);
-		return "redirect:.";
+		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping(value="alerts/index",method=RequestMethod.GET)
 	public String index(ModelMap map)
 	{
-		List<Alert> alerts = alertService.fetchAll();
-		map.addAttribute("alerts",alerts);
-		return "alert/index";
+		List<Alert> dangers = new ArrayList<>();
+		
+		List<Alert> alertsOpen = alertService.fetchAllOpen();
+
+		List<Phase> phases = phaseService.fetchAll();
+		List<String> items = new ArrayList<>();
+		items.add("");
+		for (Phase phase : phases) {
+			items.add(phase.getTitle());
+		}
+		
+		for (Alert alert : alertsOpen) {
+			if(CheckAlert(alert))
+			{
+				dangers.add(alert);
+			}
+		}
+		System.err.println(dangers.size());
+		map.addAttribute("items",items);
+		return "alert/lister";
 	}
 	
 	@RequestMapping(value="alerts/{num}/delete",method=RequestMethod.GET)
@@ -121,6 +149,21 @@ public class AlertController {
 	{
 		alertService.delete(num);
 		return "redirect:/alerts/index";
+	}
+	
+	public boolean CheckAlert(Alert alert)
+	{
+		String phase = alert.getPhase();
+		int duree = phaseService.findByTitle(phase).getDuree();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(alert.getDate_creation());
+		cal.add(Calendar.HOUR,-24*duree);
+		Date d = cal.getTime();
+		if(d.equals(new Date()))
+		{
+			return true;
+		}
+		return false;
 	}
 
 }

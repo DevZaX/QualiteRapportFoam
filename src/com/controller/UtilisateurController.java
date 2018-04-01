@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -244,12 +245,14 @@ public class UtilisateurController {
 	 }
 	 
 	 @RequestMapping(value="users/{langue}",method=RequestMethod.GET)
-	 public String changeLangue(@PathVariable("langue")String langue,Principal p)
+	 
+	 public String changeLangue(@PathVariable("langue")String langue,Principal p,HttpServletRequest request)
 	 {
 		 Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
 		 utilisateur.setLangue(langue);
 		 utilisateurService.update(utilisateur);
-		 return "redirect:/projets/index";
+		// return "redirect:/projets/index";
+		 return "redirect:"+request.getHeader("Referer");
 	 }
 	 
 	 
@@ -300,6 +303,18 @@ public class UtilisateurController {
 	public String test()
 	 {
 		 return "home";
+	 }
+	 
+	 @RequestMapping(value="1/aa",method=RequestMethod.GET)
+	 public String aa()
+	 {
+		 return "exemple/a";
+	 }
+	 
+	 @RequestMapping(value="1/bb",method=RequestMethod.GET)
+	 public String bb()
+	 {
+		 return "exemple/b";
 	 }
 
 

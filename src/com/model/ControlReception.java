@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Proxy;
 
 @Entity
@@ -39,7 +40,7 @@ public class ControlReception {
 		this.date_creation = date_creation;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	private Emballage emballage;
 	
 	private int qte_planned;
@@ -48,7 +49,7 @@ public class ControlReception {
 	
 	private int qte_nonConfortable;
 	
-	@OneToMany(mappedBy="controlReception",cascade=CascadeType.PERSIST,fetch=FetchType.EAGER,orphanRemoval=true)
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<DefautControlReception> defautControlReceptions = new ArrayList<>();
 	
 	private String username;

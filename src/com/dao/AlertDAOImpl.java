@@ -82,4 +82,12 @@ public class AlertDAOImpl implements AlertDAO {
 		
 	}
 
+
+
+	@Override
+	public List<Alert> fetchAllOpen() {
+		Session session = sessionFactory.getCurrentSession();
+		return session.createQuery("from Alert where status='open'").list();
+	}
+
 }
