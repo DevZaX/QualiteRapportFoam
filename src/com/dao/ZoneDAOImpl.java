@@ -9,6 +9,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.model.Poste;
+import com.model.PosteForPiece;
 import com.model.Zone;
 
 @Repository
@@ -70,6 +72,64 @@ public class ZoneDAOImpl implements ZoneDAO {
 		{
 			session.delete(zone);
 		}
+	}
+
+
+
+	@Override
+	public void addPoste(Poste poste) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		session.save(poste);
+	}
+
+
+
+	@Override
+	public List<Poste> fetchAllPostes() {
+		Session session = sessionFactory.getCurrentSession();
+		List<Poste> postes = new ArrayList<>();
+		postes = session.createQuery("from Poste").list();
+		return postes;
+		
+	}
+
+
+
+	@Override
+	public void deletePoste(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		Poste poste = (Poste) session.load(Poste.class, id);
+		session.delete(poste);
+		
+	}
+
+
+
+	@Override
+	public void addPosteForPiece(PosteForPiece posteForPiece) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(posteForPiece);
+		
+	}
+
+
+
+	@Override
+	public void deletePosteForPiece(PosteForPiece posteForPiece) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(posteForPiece);
+		
+	}
+
+
+
+	@Override
+	public PosteForPiece findPosteForPieceByTitle(String poste_name) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from PosteForPiece where title=:title");
+		query.setParameter("title", poste_name);
+		return (PosteForPiece) query.uniqueResult();
 	}
 
 }

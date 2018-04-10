@@ -48,6 +48,14 @@ public class FamilleServiceImpl implements FamilleService {
 	public List<Famille> fetchAll() {
 		return familleDAO.fetchAll();
 	}
+
+
+
+	@Override
+	@Transactional
+	public Famille find(Long id) {
+		return familleDAO.find(id);
+	}
 	
 	
 

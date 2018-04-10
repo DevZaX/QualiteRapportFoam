@@ -60,6 +60,12 @@
 				<value>com.model.Zone40F</value>
 				<value>com.model.DefautControl</value>
 				<value>com.model.DefautControlMur</value>
+				<value>com.model.Picture</value>
+				<value>com.model.Poste</value>
+				<value>com.model.PosteForPiece</value>
+				<value>com.model.AlertInjection</value>
+			
+			
 				
 			</list>
 		</property>
@@ -234,6 +240,14 @@
 	<property name="zone40FDAO" ref="zone40FDAO"></property>
 	</bean>
 	
+	<!-- alertInjection -->
+	<bean id="alertInjectionDAO" class="com.dao.AlertInjectionDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="alertInjectionService" class="com.service.AlertInjectionServiceImpl">
+	<property name="alertInjectionDAO" ref="alertInjectionDAO"></property>
+	</bean>
+	
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
@@ -241,15 +255,16 @@
 		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 	</bean>
 	
-<!-- 	<mvc:interceptors> -->
-<!-- 	<mvc:interceptor> -->
-<!-- 		<mvc:mapping path="users/verefication"/> -->
-<!-- 		<bean class="com.interceptor.AuthenticationInterceptor" /> -->
-<!-- 	</mvc:interceptor> -->
-	
-<!--      </mvc:interceptors>  -->
+	<mvc:interceptors>
+	<mvc:interceptor>
+		<mvc:mapping path="controle_injection/work"/>
+		<bean class="com.interceptor.AuthenticationInterceptor" />
+	</mvc:interceptor>
+     </mvc:interceptors> 
      
-
+ <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="20848820" />
+    </bean>
 	
 	
 	    <mvc:annotation-driven />

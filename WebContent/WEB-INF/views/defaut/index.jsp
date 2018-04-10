@@ -46,6 +46,7 @@
                      <th><c:out value="${count}"></c:out></th>
                      <td><c:out value="${e.getCode() }"></c:out></td>
                      <td><c:out value="${e.getTitle() }"></c:out></td>
+                     <td><c:out value="${e.getSide() }"></c:out></td>
                       
                      <td><a href="${e.getCode()}/delete"><i style="color:red;" class="fa fa-trash"></i></a></td>
                      

@@ -80,6 +80,16 @@ public class DefautDAOImpl implements DefautDAO{
 		defauts = session.createQuery("from Defaut").list();
 		return defauts;
 	}
+
+
+
+	@Override
+	public List<Defaut> findBySide(String string) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Defaut where side=:string");
+		query.setParameter("string", string);
+		return query.list();
+	}
 	
 	
 

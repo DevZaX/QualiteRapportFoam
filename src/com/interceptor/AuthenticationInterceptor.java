@@ -10,15 +10,17 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		 
-		String username = request.getParameter("username");
-		if("username".equals(username))
-		{
-			return true;
-		}
 		
-		response.sendRedirect("users/auth");
-		return false;
+		
+		System.err.println("mara min hona");
+		return true;
+//		if(request.getAttribute("mat") == null)
+//		{
+//			response.sendRedirect("test/1");
+//			return false;
+//		}
+//		System.err.println("mara min hona");
+//		return true;
 	}
 
 	

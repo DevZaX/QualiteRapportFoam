@@ -68,4 +68,16 @@ public class DefautControlMurDAOImpl implements DefautControlMurDAO {
 		
 	}
 
+
+
+	@Override
+	public DefautControlMur getDefautControlMurByControlIdAndTypeAndCode(Long id, String type, String code) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from DefautControlMur where controlMur_id = :id and type = :type and code = :code");
+		query.setParameter("id", id);
+		query.setParameter("type", type);
+		query.setParameter("code", code);
+		return (DefautControlMur) query.uniqueResult();
+	}
+
 }

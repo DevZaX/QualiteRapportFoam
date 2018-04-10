@@ -1,12 +1,20 @@
 package com.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,17 +23,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.index.PrixIndex;
 import com.index.ProjetIndex;
 import com.model.Famille;
+import com.model.Picture;
 import com.model.Piece;
+import com.model.Poste;
+import com.model.PosteForPiece;
 import com.model.Projet;
 import com.model.Utilisateur;
 import com.service.FamilleService;
 import com.service.PieceService;
 import com.service.ProjetService;
 import com.service.UtilisateurService;
+import com.service.ZoneService;
 import com.wrapper.ProjetWrapper;
+import com.wrapper.PrixWrapper;
 
 @Controller
 public class ProjetController {
@@ -35,9 +51,17 @@ public class ProjetController {
     private FamilleService familleService;
 	private PieceService pieceService;
 	private UtilisateurService utilisateurService;
+	private ZoneService zoneService;
 	
 	
 	
+	
+	@Autowired
+	@Qualifier(value="zoneService")
+	public void setZoneService(ZoneService zoneService) {
+		this.zoneService = zoneService;
+	}
+
 	@Autowired
 	@Qualifier(value="utilisateurService")
 	public void setUtilisateurService(UtilisateurService utilisateurService) {
@@ -63,80 +87,136 @@ public class ProjetController {
 	}
 
 	@RequestMapping(value="projets/store",method=RequestMethod.POST)
-	public String store(ModelMap map,@ModelAttribute("projetWrapper")ProjetWrapper projetWrapper,BindingResult result,Principal principal)
+	public String store(ModelMap map,@ModelAttribute("projetWrapper")ProjetWrapper projetWrapper,BindingResult result,Principal principal,HttpServletRequest servletRequest)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
 		roles.add("Injenieur qualite");
 	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+		//Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
 		
 		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+	/*	if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
 		{
 			return "denied";
-		}
+		}*/
 		
 		Projet pt = projetService.getProjetByTitle(projetWrapper.getTitle());
 		Famille ft = familleService.getFamilleByTitle(projetWrapper.getFamille());
-		
+		List<MultipartFile> files =projetWrapper.getImages();
+		if(files == null || files.size()==0) return "redirect:/projets/index";
 		if(ft == null)
 		{
 			if(pt == null)
 			{
 				Projet p = new Projet();
 				p.setTitle(projetWrapper.getTitle());
-				
 				projetService.saveOrUpdateProjet(p);
-				
 				Famille f = new Famille();
 				f.setTitle(projetWrapper.getFamille());
-				
 				f.setProjet(p);
 				p.getFamilles().add(f);
 				familleService.save(f);
-				
-				
 				Piece pi = new Piece();
 				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
-				
 				pi.setFamille(f);
 				f.getPieces().add(pi);
 				pi.setFamille(f);
-				pi.setEtat(1);
 				pieceService.addPiece(pi);
+				for (String post : projetWrapper.getPosts()) {
+					PosteForPiece posteForPiece = new PosteForPiece();
+					posteForPiece.setTitle(post);
+					posteForPiece.setPiece(pi);
+					pi.getPosteForPieces().add(posteForPiece);
+					zoneService.addPosteForPiece(posteForPiece);
+				}
+				for (MultipartFile multipartFile : files) {
+					
+					 try
+		                {
+						    Picture picture = new Picture();
+						    picture.setPicture(multipartFile.getBytes());
+						    picture.setPiece(pi);
+						    pi.getImages().add(picture);
+						    pieceService.savePicture(picture);
+  
+		                } catch (IOException e)
+		                {
+		                    e.printStackTrace();
+		                }
+				}
+				
 				
 			}else {
+				
 				Famille f = new Famille();
 				f.setTitle(projetWrapper.getFamille());
-				
 				f.setProjet(pt);
 				pt.getFamilles().add(f);
 				familleService.save(f);
-				
-				
 				Piece pi = new Piece();
 				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
-				
 				pi.setFamille(f);
 				f.getPieces().add(pi);
-				pi.setFamille(f);
-				pi.setEtat(1);
 				pieceService.addPiece(pi);
+				for (String post : projetWrapper.getPosts()) {
+					PosteForPiece posteForPiece = new PosteForPiece();
+					posteForPiece.setTitle(post);
+					posteForPiece.setPiece(pi);
+					pi.getPosteForPieces().add(posteForPiece);
+					zoneService.addPosteForPiece(posteForPiece);
+					
+				}
+				for (MultipartFile multipartFile : files) {
+					
+					 try
+		                {
+						    Picture picture = new Picture();
+						    picture.setPicture(multipartFile.getBytes());
+						    picture.setPiece(pi);
+						    pi.getImages().add(picture);
+						    pieceService.savePicture(picture);
+ 
+		                } catch (IOException e)
+		                {
+		                    e.printStackTrace();
+		                }
+				}		
 			}
 		}else {
+		
 			Piece pi = new Piece();
 			pi.setRef(projetWrapper.getRef().toUpperCase());
 			pi.setVersion(projetWrapper.getVersion());
-			
 			pi.setFamille(ft);
 			ft.getPieces().add(pi);
-			pi.setFamille(ft);
-			pi.setEtat(1);
 			pieceService.addPiece(pi);
+			for (String post : projetWrapper.getPosts()) {
+				PosteForPiece posteForPiece = new PosteForPiece();
+				posteForPiece.setTitle(post);
+				posteForPiece.setPiece(pi);
+				pi.getPosteForPieces().add(posteForPiece);
+				zoneService.addPosteForPiece(posteForPiece);
+				
+			}
+			for (MultipartFile multipartFile : files) {
+				
+				 try
+	                {
+					    Picture picture = new Picture();
+					    picture.setPicture(multipartFile.getBytes());
+					    picture.setPiece(pi);
+					    pi.getImages().add(picture);
+					    pieceService.savePicture(picture);
+
+	                } catch (IOException e)
+	                {
+	                    e.printStackTrace();
+	                }
+			}
 		}
 		
 		return "redirect:/projets/index";
@@ -144,9 +224,13 @@ public class ProjetController {
 	
 	
 	@RequestMapping(value="projets/index",method=RequestMethod.GET)
-	public String index(ModelMap map,Principal principal)
+	public String index(ModelMap map,Principal principal) throws UnsupportedEncodingException
 	{
+        List<Poste> postes = zoneService.fetchAllPostes() ;
 		
+		map.addAttribute("postes",postes);
+		
+	
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
@@ -154,14 +238,14 @@ public class ProjetController {
 		roles.add("Qualite client");
 		roles.add("Coordinateur injection");
 	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
-		
-		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
-		
+//		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+//		
+//		
+//		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+//		{
+//			return "denied";
+//		}
+//		
 		
 		List<ProjetIndex> items = new ArrayList<>();
 		List<Projet> projets = projetService.getProjets();
@@ -170,24 +254,28 @@ public class ProjetController {
 			for (Famille famille : familles) {
 				List<Piece> pieces = famille.getPieces();
 				for (Piece piece : pieces) {
-					
-					 if(piece.getEtat() == 1)
-					 {
+
 						 ProjetIndex projetIndex = new ProjetIndex();
 						 projetIndex.setTitle(projet.getTitle());
 						 projetIndex.setFamille(famille.getTitle());
 						 projetIndex.setRef(piece.getRef());
 						 projetIndex.setVersion(piece.getVersion());
 						 projetIndex.setId(projet.getId());
+						 projetIndex.setFamilleId(famille.getId());
+						 byte[] encodeBase64 = Base64.encodeBase64(piece.getImages().get(0).getPicture());
+				         String base64Encoded = new String(encodeBase64, "UTF-8");
+						 projetIndex.setPicture(base64Encoded);
 						 items.add(projetIndex);
-					 }
+						 
+						 
+					
 				}
 			}
 		}
 		
 		map.addAttribute("items", items);
 		map.addAttribute("projetWrapper",new ProjetWrapper());
-		map.addAttribute("utilisateur",u);
+		//map.addAttribute("utilisateur",u);
 		
 		return "projet/index";
 	}
@@ -195,28 +283,108 @@ public class ProjetController {
 	
 	
 	
-	@RequestMapping(value="projets/{ref}/delete",method=RequestMethod.GET)
-	public String destroy(@PathVariable("ref")String ref,Principal principal)
+	@RequestMapping(value="projets/{id}/{ref}/delete",method=RequestMethod.GET)
+	public String destroy(@PathVariable("id")Long id,
+			@PathVariable("ref")String ref,
+			Principal principal)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
 		roles.add("Injenieur qualite");
-	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
-		
-		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+		//Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	/*	if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
 		{
 			return "denied";
-		}
+		}*/
+		
 		Piece piece = pieceService.find(ref);
 		
-		piece.setEtat(0);
+		piece.setImages(null);
+		piece.setPosteForPieces(null);
 		pieceService.update(piece);
-		
+		Famille f = piece.getFamille();
+		f.getPieces().remove(piece);
+		familleService.update(f);
 		return "redirect:/projets/index";
 	}
+	
+	
+	
+	@RequestMapping(value="projets/create",method=RequestMethod.GET)
+	public String create(ModelMap map,
+			Principal principal)
+	{
+		//Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(principal.getName());
+        List<Poste> postes = zoneService.fetchAllPostes() ;
+		map.addAttribute("postes",postes);
+		map.addAttribute("projetWrapper",new ProjetWrapper());
+	//	map.addAttribute("utilisateur",utilisateur);
+		return "projet/create";
+	}
+	
+	@RequestMapping(value="prix/index",method=RequestMethod.GET)
+	public String prixIndex(ModelMap map
+			)
+	{
+		
+		List<PrixIndex> items = new ArrayList<>();
+		List<Projet> projets = projetService.getProjets();
+		for (Projet projet : projets) {
+			List<Famille> familles = projet.getFamilles();
+			for (Famille famille : familles) {
+				List<Piece> pieces = famille.getPieces();
+				for (Piece piece : pieces) {
+					PrixIndex prixIndex = new PrixIndex();
+					prixIndex.setRef(piece.getRef());
+					prixIndex.setVersion(piece.getVersion());
+					prixIndex.setId(famille.getId());
+					prixIndex.setPriceA(piece.getPrice());
+					prixIndex.setPriceP(famille.getPrice());
+					prixIndex.setPoidsP(famille.getWeight());
+				    items.add(prixIndex);
+				}
+			}
+		}
+		map.addAttribute("items", items);
+	
+		return "projet/prixIndex";
+	}
+	
+	
+	@RequestMapping(value="prix/{ref}/{id}/edit",method=RequestMethod.GET)
+	public String prixEdit(ModelMap map,
+			@PathVariable("id")Long id,
+			@PathVariable("ref")String ref)
+	{
+		Piece piece = pieceService.find(ref); 
+		Famille famille = familleService.find(id);
+		PrixWrapper prixWrapper = new PrixWrapper();
+		prixWrapper.setId(id);
+		prixWrapper.setRef(ref);
+		prixWrapper.setVersion(piece.getVersion());
+		prixWrapper.setPriceA(piece.getPrice());
+		prixWrapper.setPriceP(famille.getPrice());
+		prixWrapper.setPoidsP(famille.getWeight());
+		map.addAttribute("prixWrapper",prixWrapper);
+		return "projet/prixEdit";
+	}
+	
+	@RequestMapping(value="prix/update",method=RequestMethod.POST)
+	public String prixUpdate(@ModelAttribute("prixWrapper")PrixWrapper prixWrapper)
+	{
+		 Piece piece = pieceService.find(prixWrapper.getRef());
+		 piece.setPrice(prixWrapper.getPriceA());
+		 pieceService.update(piece);
+		 
+		 Famille famille = familleService.find(prixWrapper.getId());
+		 famille.setPrice(prixWrapper.getPriceP());
+		 famille.setWeight(prixWrapper.getPoidsP());
+		 familleService.update(famille);
+		
+		return "redirect:/prix/index";
+	}
+	
 	
 	
 

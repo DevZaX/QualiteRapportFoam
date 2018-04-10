@@ -25,4 +25,6 @@ public interface DefautControlMurService {
 
 	public void update(DefautControlMur dc);
 
+	public DefautControlMur getDefautControlMurByControlIdAndTypeAndCode(Long id, String type, String code);
+
 }

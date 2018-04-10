@@ -50,7 +50,7 @@ public class DefautControlReception {
 		this.qte = qte;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	public ControlReception getControlReception() {
 		return controlReception;
 	}

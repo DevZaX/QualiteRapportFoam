@@ -41,7 +41,7 @@ public class ControlMur {
     private String zone;
     private String prototype;
     private String equipe;
-    private String matriculeControlleurInjection;
+    private String matricule_controlleur_injection;
     
     
 	
@@ -101,13 +101,14 @@ public class ControlMur {
 	public void setEquipe(String equipe) {
 		this.equipe = equipe;
 	}
-	public String getMatriculeControlleurInjection() {
-		return matriculeControlleurInjection;
-	}
-	public void setMatriculeControlleurInjection(String matriculeControlleurInjection) {
-		this.matriculeControlleurInjection = matriculeControlleurInjection;
-	}
 	
+	
+	public String getMatricule_controlleur_injection() {
+		return matricule_controlleur_injection;
+	}
+	public void setMatricule_controlleur_injection(String matricule_controlleur_injection) {
+		this.matricule_controlleur_injection = matricule_controlleur_injection;
+	}
 	public Date getDate() {
 		return date;
 	}

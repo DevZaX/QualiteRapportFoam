@@ -16,4 +16,6 @@ public interface DefautDAO {
 	
 	public List<Defaut> listDefaut();
 
+	public List<Defaut> findBySide(String string);
+
 }

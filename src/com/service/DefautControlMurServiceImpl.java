@@ -66,4 +66,13 @@ public class DefautControlMurServiceImpl implements DefautControlMurService {
 		return defautControlDAO.getDefautControlByControlIdAndTypeAndCode(id, type,code);
 	}
 
+
+
+
+	@Override
+	@Transactional
+	public DefautControlMur getDefautControlMurByControlIdAndTypeAndCode(Long id, String type, String code) {
+		return defautControlDAO.getDefautControlMurByControlIdAndTypeAndCode(id, type, code);
+	}
+
 }

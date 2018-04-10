@@ -71,4 +71,14 @@ public class DefautServiceImpl implements DefautService{
 		return defautDAO.listDefaut();
 	}
 
+
+
+
+	@Override
+	@Transactional
+	public List<Defaut> findBySide(String string) {
+		
+		return defautDAO.findBySide(string);
+	}
+
 }

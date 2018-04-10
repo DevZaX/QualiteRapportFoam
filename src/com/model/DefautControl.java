@@ -16,7 +16,7 @@ import org.hibernate.annotations.Proxy;
 
 @Entity
 @Proxy(lazy=false)
-public class DefautControl {
+public class DefautControl{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -26,11 +26,13 @@ public class DefautControl {
 	
 	private String code;
 	
-	private String title;
+	@ManyToOne(cascade=CascadeType.ALL)
+	private ControlInjection control;
+
 	
 	private String type;
-	
-	private int qte;
+
+    private int qte;
 
 
 	public int getQte() {
@@ -50,9 +52,7 @@ public class DefautControl {
 	}
 
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private ControlInjection control;
-
+	
 	public String getCode() {
 		return code;
 	}
@@ -61,13 +61,7 @@ public class DefautControl {
 		this.code = code;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	
 
 	public ControlInjection getControl() {
 		return control;
@@ -77,12 +71,7 @@ public class DefautControl {
 		this.control = control;
 	}
 
-	public DefautControl(String code, String title, ControlInjection control) {
-		super();
-		this.code = code;
-		this.title = title;
-		this.control = control;
-	}
+	
 
 	public DefautControl() {
 		super();
@@ -96,6 +85,8 @@ public class DefautControl {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 
 	
 	

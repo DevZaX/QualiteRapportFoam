@@ -1,5 +1,7 @@
 package com.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,14 @@ public class ControlMurServiceImpl implements ControlMurService {
 	@Transactional
 	public void addControlMur(ControlMur controlMur) {
 		controlDAO.addControlMur(controlMur);
+	}
+
+
+
+	@Override
+	@Transactional
+	public ControlMur fetchAll(Date startDate, Date endDate, String upperCase) {
+		return controlDAO.fetchAll(startDate,endDate,upperCase);
 	}
 
 }

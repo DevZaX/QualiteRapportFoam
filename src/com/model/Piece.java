@@ -1,13 +1,22 @@
 package com.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Proxy(lazy=false)
@@ -15,24 +24,46 @@ public class Piece {
 	
 	@Id
 	private String ref;
-	
 	private String version;
-	
 	private Double price;
 	
-	private int etat;
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	private List<PosteForPiece>  posteForPieces = new ArrayList<>();
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Picture> images = new ArrayList<>();
 	
-	public int getEtat() {
-		return etat;
-	}
-
-	public void setEtat(int etat) {
-		this.etat = etat;
-	}
-
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Famille famille;
+	
+	
+	
+	
+	public List<PosteForPiece> getPosteForPieces() {
+		return posteForPieces;
+	}
+
+	public void setPosteForPieces(List<PosteForPiece> posteForPieces) {
+		this.posteForPieces = posteForPieces;
+	}
+
+	
+	
+	
+
+	
+	
+	
+	public List<Picture> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Picture> images) {
+		this.images = images;
+	}
+
+	
 	
 	
 

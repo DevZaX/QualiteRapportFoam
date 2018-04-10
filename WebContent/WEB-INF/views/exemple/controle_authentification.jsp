@@ -19,6 +19,14 @@
     <link href="<c:url value='/css/font-awesome.min.css' />" rel="stylesheet">
     <!-- jQuery -->
     <script src='<c:url value="/js/jquery.min.js" />'></script>
+    <style>
+    body{
+	 	background-image: url("../images/417018.jpg");
+	 	background-position: center;
+	 	background-size: 100%;
+	 	background-repeat: no-repeat;
+	}
+    </style>
   </head>
   
   <body>
@@ -26,17 +34,18 @@
   				<div class="container" style="margin-top:100px;">
   				<div class="row">
   					<div class="col-md-6 col-md-offset-3">
-  						<center><img src="../images/lear.png" width="300" height="200" /></center>
+  						<center><img style="border-radius: 50%;margin-bottom:10px;" src="../images/lear.png" width="300" height="200" /></center>
   					</div>
   				</div>
   						<div class="row">
   							<div class="col-md-6 col-md-offset-3">
-  								<form>
+  								<form action="../controle_injection/auth" method="post">
+  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
   									<div class="form-group">
-  										<input style="padding:25px;" type="text" class="form-control" placeholder="Votre matricule">
+  										<input name="mat" style="padding:25px;" type="text" class="form-control" placeholder="Votre matricule">
   									</div>
   									<div class="form-group">
-  										<input style="padding:25px;" type="text" class="form-control" placeholder="Matricule d'agent d'emballage">
+  										<input name="mat_e" style="padding:25px;" type="text" class="form-control" placeholder="Matricule d'agent d'emballage">
   									</div>
   									<div class="form-group">
   										<select name="shift" class="form-control">
@@ -63,6 +72,13 @@
   										<select name="equipe" class="form-control">
   											<c:forEach items="${ equipes}" var="equipe">
   												<option><c:out value="${ equipe}"></c:out></option>
+  											</c:forEach>
+  										</select>
+  									</div>
+  									<div class="form-group">
+  										<select name="poste" class="form-control">
+  											<c:forEach items="${ postes}" var="poste">
+  												<option><c:out value="${ poste}"></c:out></option>
   											</c:forEach>
   										</select>
   									</div>

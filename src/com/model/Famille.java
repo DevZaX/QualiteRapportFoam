@@ -26,19 +26,21 @@ public class Famille {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long  id;
-	
 	private Double weight;
-	
 	private Double price;
-	
 	private String title;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Piece> pieces = new ArrayList<>();
-
+	
+	
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Projet projet;
+	
+	
+	
+	
 	
 	public String getTitle() {
 		return title;

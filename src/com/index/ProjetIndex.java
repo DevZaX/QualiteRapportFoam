@@ -4,6 +4,22 @@ public class ProjetIndex {
 
 	private String title;
 	private String famille;
+	private Long familleId;
+	
+	private String picture;
+
+	
+
+	
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
 	private String ref;
 	private String version;
 	private double weight;
@@ -11,6 +27,14 @@ public class ProjetIndex {
 	private double priceAPPT;
 	private Long id;
 	private int etat;
+	
+	public Long getFamilleId() {
+		return familleId;
+	}
+
+	public void setFamilleId(Long familleId) {
+		this.familleId = familleId;
+	}
 	
 	public int getEtat() {
 		return etat;
@@ -86,6 +110,7 @@ public class ProjetIndex {
 	public Long getId() {
 		return id;
 	}
+
 	
 	
 }

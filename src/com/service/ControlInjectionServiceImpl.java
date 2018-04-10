@@ -60,4 +60,13 @@ public class ControlInjectionServiceImpl implements ControlInjectionService {
 		return controlDAO.findByRef(string);
 	}
 
+
+
+	@Override
+	@Transactional
+	public List<ControlInjection> findBy(Date startDate, Date endDate,String champ ,String type) {
+		
+		return controlDAO.findBy(startDate,endDate,champ,type);
+	}
+
 }

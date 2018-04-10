@@ -20,4 +20,6 @@ public interface DefautControlMurDAO {
 
 	public void update(DefautControlMur dc);
 
+	public DefautControlMur getDefautControlMurByControlIdAndTypeAndCode(Long id, String type, String code);
+
 }

@@ -1,6 +1,10 @@
 package com.wrapper;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProjetWrapper {
 	
@@ -8,9 +12,26 @@ public class ProjetWrapper {
 	private String famille;
 	private String ref;
 	private String version;
-	
-	
-	
+	private List<MultipartFile> images;
+	private List<String> posts = new ArrayList<>();
+
+
+	public List<String> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<String> posts) {
+		this.posts = posts;
+	}
+
+	public List<MultipartFile> getImages() {
+		return images;
+	}
+
+	public void setImages(List<MultipartFile> images) {
+		this.images = images;
+	}
+
 	public ProjetWrapper() {	
 	}
 

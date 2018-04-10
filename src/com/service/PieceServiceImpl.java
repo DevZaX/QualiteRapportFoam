@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.PieceDAO;
+import com.model.Picture;
 import com.model.Piece;
 
 @Service
@@ -53,6 +54,25 @@ public class PieceServiceImpl implements PieceService {
 	@Transactional
 	public void update(Piece piece) {
 		pieceDAO.update(piece);
+		
+	}
+
+
+
+	@Override
+	@Transactional
+	public void savePicture(Picture picture) {
+		pieceDAO.savePicture(picture);
+		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public void delete(Piece piece) {
+		pieceDAO.delete(piece);
 		
 	}
 

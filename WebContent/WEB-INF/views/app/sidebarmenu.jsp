@@ -41,8 +41,10 @@
                   
                     <li><a><i class="fa fa-bookmark"></i> Partie Injection <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                    <li><a href="../prix/index">gerer les prix</a></li>
                       <li><a href="../injection/index">Les controles d'injection</a></li>
                       <li><a href="../projets/index">Liste des references</a></li>
+                      <li><a href="../projets/create"> ajouter référence</a></li>
                         <c:if test="${ (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Technicient qualite') || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Responsable qualite' ) || (utilisateur.getUtilisateurRoles().get(0).getRole() == 'Injenieur qualite')}">
                       <li><a href="../zones/index">Les zones des robots</a></li>
                       </c:if>

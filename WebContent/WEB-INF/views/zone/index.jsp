@@ -40,15 +40,11 @@
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Zones</h2>
-                    
-                    <div class="clearfix"></div>
-                  </div>
+                  
                   <div class="x_content">
                   
                   <div class="row">
-                  
+                  <h3>Manage Zones</h3>
                   <table class="table">
                   <form:form action="../zones/store" modelAttribute="zone" method="POST">
                   
@@ -70,8 +66,30 @@
                   </div>
                   
                      <c:forEach items="${ zones}" var="e">
-                     <p><c:out value="${e.getTitle() }"></c:out> : <a href="${e.getId()}/delete"><i style="color:red;" class="fa fa-trash"></i></a></p>
+                     <p><c:out value="${e.getTitle() }"></c:out> : <a class="btn btn-danger" href="${e.getId()}/delete"><i  class="fa fa-trash"></i></a></p>
                      </c:forEach>
+                     
+                     <div class="row">
+                     <div class="col-md-12">
+                     	<h3>Manage Posts</h3>
+                     	<table class="table">
+                     		<tr>
+                     			<form method="post" action="../postes/store">
+                     			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
+                     			<td><input type="text" name="title" placeholder="post's name"></td>
+                     			<td><button class="btn btn-success"><i class="fa fa-save"></i></button></td>
+                     			</form>
+                     		</tr>
+                     	</table>
+                     	<div class="row">
+                     		<div class="col-md-12">
+                     			<c:forEach items="${postes }" var="p">
+                     				<p>${p.getTitle() } : <a class="btn btn-danger" href="../postes/${p.getId() }/delete"><i class="fa fa-trash"></i></a></p>
+                     			</c:forEach>
+                     		</div>
+                     	</div>
+                     </div>
+                     </div>
                      
                   </div>
                 </div>

@@ -1,6 +1,8 @@
 package com.controller;
 
 import java.security.Principal;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,25 +48,12 @@ import com.wrapper.UtilisateurWrapper;
 @Controller
 public class UtilisateurController {
 	
-	
-
 	private UtilisateurService utilisateurService;
-
-	
 	private ProjetService projetService;
-	
-	
 	private FamilleService familleService;
-	
-	
 	private PieceService pieceService;
-	
-	
 	private UtilisateurRoleService utilisateurRoleService;
-	
-	
 	private DefautService defautService;
-	
 	
 	
 	@Autowired
@@ -316,6 +306,17 @@ public class UtilisateurController {
 	 {
 		 return "exemple/b";
 	 }
-
+	 
+	 @RequestMapping(value="1/cc",method=RequestMethod.GET)
+	 public String cc()
+	 {
+		 return "exemple/c";
+	 }
+	 
+	
+	 
+	
+	 
+	
 
 }

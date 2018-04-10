@@ -148,11 +148,23 @@ public class DefautControlReceptionController {
 		
 		DefautControlReception defautControlReception = defautControlReceptionService.find(id);
 		
-
+		ControlReception controlReception = defautControlReception.getControlReception();
 		
-		defautControlReception.setEtat(0);
+		List<DefautControlReception> defautControlReceptions = controlReception.getDefautControlReceptions();
 		
-	    defautControlReceptionService.update(defautControlReception);
+		defautControlReceptions.remove(defautControlReception);
+		
+		controlReception.getDefautControlReceptions().clear();
+		
+		controlReception.setDefautControlReceptions(defautControlReceptions);
+		
+		controlReceptionService.update(controlReception);
+		
+        //defautControlReceptionService.delete(id);
+		
+		//defautControlReception.setEtat(0);
+		
+	    //defautControlReceptionService.update(defautControlReception);
 		
 		
 		

@@ -66,4 +66,12 @@ public class FamilleDAOImpl implements FamilleDAO {
 		return session.createQuery("from Famille").list();
 	}
 
+
+
+	@Override
+	public Famille find(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Famille) session.load(Famille.class,new Long(id));
+	}
+
 }

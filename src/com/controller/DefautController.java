@@ -34,16 +34,18 @@ public class DefautController {
 	{
 		List<Defaut> defauts = defautService.listDefaut();
 		map.addAttribute("defauts",defauts);
-		 map.addAttribute("name", principal.getName());
+		// map.addAttribute("name", principal.getName());
 		return "defaut/index";
 	}
 	
 	
 	@RequestMapping(value="defauts/create",method = RequestMethod.GET)
 	public String create(ModelMap map,Principal principal)
-	{             
+	{           
+		       String[] sides = {"right-1","bottom","top","left-1","left-2","right-2"};
+		       map.addAttribute("sides",sides);
 		       map.addAttribute("defaut", new Defaut());
-		       map.addAttribute("name", principal.getName());
+		     //  map.addAttribute("name", principal.getName());
 				return "defaut/create";
 	}
 	

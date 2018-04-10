@@ -26,11 +26,31 @@ public class DefautControlMur {
 	
 	private String code;
 	
-	private String title;
-	
-	private String type;
+    private String type;
 	
 	private int qte;
+	
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	private ControlMur controlMur;
+	
+	
+	
+	
+	
+	
+	public ControlMur getControlMur() {
+		return controlMur;
+	}
+
+	public void setControlMur(ControlMur controlMur) {
+		this.controlMur = controlMur;
+	}
+
+
+	
+	
+	
 
 
 	public int getQte() {
@@ -50,8 +70,7 @@ public class DefautControlMur {
 	}
 
 	
-	@ManyToOne(cascade=CascadeType.ALL)
-	private ControlMur control;
+	
 
 	public String getCode() {
 		return code;
@@ -61,29 +80,11 @@ public class DefautControlMur {
 		this.code = code;
 	}
 
-	public String getTitle() {
-		return title;
-	}
+	
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+	
 
-	public ControlMur getControl() {
-		return control;
-	}
-
-	public void setControl(ControlMur control) {
-		this.control = control;
-	}
-
-	public DefautControlMur(String code, String title, ControlMur control) {
-		super();
-		this.code = code;
-		this.title = title;
-		this.control = control;
-	}
-
+	
 	public DefautControlMur() {
 		super();
 		// TODO Auto-generated constructor stub

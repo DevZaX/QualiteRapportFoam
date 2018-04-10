@@ -10,5 +10,6 @@ public interface FamilleDAO {
 	public void update(Famille famille);
 	public Famille getFamilleByTitle(String title);
 	public List<Famille> fetchAll();
+	public Famille find(Long id);
 
 }

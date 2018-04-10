@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.model.Picture;
 import com.model.Piece;
 
 @Repository
@@ -52,6 +53,22 @@ private SessionFactory sessionFactory;
 	public void update(Piece piece) {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(piece);
+		
+	}
+
+
+	@Override
+	public void savePicture(Picture picture) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(picture);
+		
+	}
+
+
+	@Override
+	public void delete(Piece piece) {
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(piece);
 		
 	}
 

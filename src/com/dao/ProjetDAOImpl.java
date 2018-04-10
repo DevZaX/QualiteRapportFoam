@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.model.Projet;
 
+
 @Repository
 public class ProjetDAOImpl implements ProjetDAO {
 	
@@ -43,7 +44,7 @@ public class ProjetDAOImpl implements ProjetDAO {
 	@Override
 	public List<Projet> getProjets() {
 		Session session = sessionFactory.getCurrentSession();
-		List<Projet> projets = session.createQuery("from Projet").list();
+		List<Projet> projets = session.createQuery("from Projet order by id desc").list();
 		return projets;
 	}
 
@@ -59,7 +60,7 @@ public class ProjetDAOImpl implements ProjetDAO {
 	@Override
 	public List<Projet> fetchAll() {
 		Session session = sessionFactory.getCurrentSession();
-		return session.createQuery("from Projet").list();
+		return session.createQuery("from Projet order by id desc").list();
 	}
 
 	@Override
@@ -70,7 +71,8 @@ public class ProjetDAOImpl implements ProjetDAO {
 			query.setParameter("id", id);
 		
 	}
-	
+
+
 	
 
 }

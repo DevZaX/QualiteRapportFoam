@@ -8,6 +8,7 @@ import com.model.Piece;
 import com.model.Projet;
 
 
+
 public interface ProjetService {
 	
 	public void saveOrUpdateProjet(Projet projet);
@@ -21,5 +22,7 @@ public interface ProjetService {
 	public List<Projet> fetchAll();
 
 	public void delete(Long id);
+
+	
 
 }

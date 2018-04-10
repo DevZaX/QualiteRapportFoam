@@ -72,6 +72,17 @@ public class ControlInjectionDAOImpl implements ControlInjectionDAO {
 	    return (ControlInjection) query.uniqueResult();
 		
 	}
+
+
+	@Override
+	public List<ControlInjection> findBy(Date startDate, Date endDate,String champ, String chose) {
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from ControlInjection where date between :startDate and :endDate and"+champ+" = :chose");
+	    query.setParameter("startDate", startDate);
+	    query.setParameter("endDate", endDate);
+	    query.setParameter("type", chose);
+	    return query.list();
+	}
 	
 	
 

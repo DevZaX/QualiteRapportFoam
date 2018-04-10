@@ -12,6 +12,7 @@ import com.dao.ProjetDAO;
 import com.model.Piece;
 import com.model.Projet;
 
+
 @Service
 public class ProjetServiceImpl implements ProjetService{
 	
@@ -69,6 +70,9 @@ public class ProjetServiceImpl implements ProjetService{
 		projetDAO.delete(id);
 		
 	}
+
+
+	
 
 
 

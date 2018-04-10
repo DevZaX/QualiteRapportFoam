@@ -17,4 +17,6 @@ public interface ControlInjectionDAO {
 
 	public ControlInjection findByRef(String string);
 
+	public List<ControlInjection> findBy(Date startDate, Date endDate,String champ, String type);
+
 }

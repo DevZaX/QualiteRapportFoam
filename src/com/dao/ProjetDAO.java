@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.model.Projet;
 
+
 public interface ProjetDAO {
 	
 	public void saveOrUpdateProjet(Projet projet);
@@ -17,4 +18,6 @@ public interface ProjetDAO {
 	public List<Projet> fetchAll();
 
 	public void delete(Long id);
+
+	
 }

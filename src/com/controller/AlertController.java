@@ -134,12 +134,23 @@ public class AlertController {
 		}
 		
 		for (Alert alert : alertsOpen) {
-			if(CheckAlert(alert))
-			{
-				dangers.add(alert);
+			String phase = alert.getPhase();
+			if(phase != null) {
+				int duree = phaseService.findByTitle(phase).getDuree();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(alert.getDate_creation());
+				cal.add(Calendar.HOUR,-24*duree);
+				Date d = cal.getTime();
+				System.err.println(d);
+				if(d.before(new Date()))
+				{
+					dangers.add(alert);
+				}
 			}
+			
+			
 		}
-		System.err.println(dangers.size());
+		map.addAttribute("dangers",dangers);
 		map.addAttribute("items",items);
 		return "alert/lister";
 	}
@@ -159,7 +170,8 @@ public class AlertController {
 		cal.setTime(alert.getDate_creation());
 		cal.add(Calendar.HOUR,-24*duree);
 		Date d = cal.getTime();
-		if(d.equals(new Date()))
+		System.err.println(d);
+		if(d.before(new Date()))
 		{
 			return true;
 		}

@@ -8,11 +8,11 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/zones/**" access="isAuthenticated()" />
-		<intercept-url pattern="/defauts/**" access="isAuthenticated()" />
+<!-- 		<intercept-url pattern="/defauts/**" access="isAuthenticated()" /> -->
 		<intercept-url pattern="/users/recovery" access="permitAll()" />
 		<intercept-url pattern="/users/forgot" access="permitAll()" />
 		<intercept-url pattern="/users/**" access="isAuthenticated()" />
-		<intercept-url pattern="/projets/**" access="isAuthenticated()" />
+<!-- 		<intercept-url pattern="/projets/**" access="isAuthenticated()" /> -->
 		<intercept-url pattern="/empiecements/**" access="isAuthenticated()" />
 		<intercept-url pattern="/familles/**" access="isAuthenticated()" />
 		<intercept-url pattern="/pieces/**" access="isAuthenticated()" />

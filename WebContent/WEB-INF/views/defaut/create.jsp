@@ -39,11 +39,14 @@
                  <h2>Nouveau defaut</h2>
                  <div class="row">
                  <form:form action="../defauts/store" method="POST" modelAttribute="defaut">
-                     <div class="col-md-6"><div class="form-group">
+                     <div class="col-md-4"><div class="form-group">
                            <form:input class="form-control" path="code" placeholder="code" value="${defaut.code }" required="required" />
                      </div></div>
-                     <div class="col-md-6"><div class="form-group">
+                     <div class="col-md-4"><div class="form-group">
                            <form:input class="form-control" path="title" placeholder="title" value="${defaut.title }" required="required" />
+                     </div></div>
+                     <div class="col-md-4"><div class="form-group">
+                           <form:select items="${sides }" class="form-control" path="side"  value="${defaut.side }" required="required" />
                      </div></div>
                      <div class="col-md-6">
 <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> 

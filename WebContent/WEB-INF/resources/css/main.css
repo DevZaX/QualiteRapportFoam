@@ -1,0 +1,10 @@
+@font-face {
+    font-family:hello;
+    src: url(../fonts/Jua-Regular.ttf);
+}
+
+
+#hello{
+	font-family: hello;
+	font-size: 15em;
+}

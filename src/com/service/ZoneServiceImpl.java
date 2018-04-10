@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.ZoneDAO;
+import com.model.Poste;
+import com.model.PosteForPiece;
 import com.model.Zone;
 
 
@@ -66,6 +68,64 @@ public class ZoneServiceImpl implements ZoneService {
 	public void deleteZone(long id) {
 		zoneDAO.deleteZone(id);
 		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public void addPoste(Poste poste) {
+		zoneDAO.addPoste(poste);
+		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public List<Poste> fetchAllPostes() {
+		return zoneDAO.fetchAllPostes();
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public void deletePoste(Long id) {
+		zoneDAO.deletePoste(id);
+		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public void addPosteForPiece(PosteForPiece posteForPiece) {
+		zoneDAO.addPosteForPiece(posteForPiece);
+		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public void deletePosteForPiece(PosteForPiece posteForPiece) {
+		zoneDAO.deletePosteForPiece(posteForPiece);
+		
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public PosteForPiece findPosteForPieceByTitle(String poste_name) {
+		return zoneDAO.findPosteForPieceByTitle(poste_name);
 	}
 
 }

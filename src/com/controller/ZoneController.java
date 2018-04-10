@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.model.Poste;
+import com.model.PosteForPiece;
 import com.model.Utilisateur;
 import com.model.Zone;
 import com.service.UtilisateurService;
@@ -64,6 +67,7 @@ public class ZoneController {
 		}
 		map.addAttribute("zone",new Zone());
 	    map.addAttribute("zones", zoneService.listZone());
+	    map.addAttribute("postes",zoneService.fetchAllPostes());
 	    map.addAttribute("utilisateur",u);
 	    
 		return "zone/index";
@@ -107,6 +111,47 @@ public class ZoneController {
 		return "redirect:/zones/index";
 	}
 	
+	
+	@RequestMapping(value="postes/store",method=RequestMethod.POST)
+	public String storePoste(@RequestParam("title")String title,Principal principal)
+	{
+		List<String> roles = new ArrayList<>();
+		roles.add("Technicient qualite");
+		roles.add("Responsable qualite");
+		roles.add("Injenieur qualite");
+	
+		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+		
+		
+		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+		{
+			return "denied";
+		}
+		Poste poste = new Poste();
+		poste.setTitle(title);
+		zoneService.addPoste(poste);
+		return "redirect:/zones/index";
+	}
+	
+	@RequestMapping(value="postes/{id}/delete",method=RequestMethod.GET)
+	public String deletePoste(@PathVariable("id")Long id,Principal principal)
+	{
+		List<String> roles = new ArrayList<>();
+		roles.add("Technicient qualite");
+		roles.add("Responsable qualite");
+		roles.add("Injenieur qualite");
+	
+		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+		
+		
+		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+		{
+			return "denied";
+		}
+		
+		zoneService.deletePoste(id);
+		return "redirect:/zones/index";
+	}
 	
 
 }
