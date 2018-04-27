@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Defauts</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+</head>
+<body>
+<div class="container">
+
+<form>
+<input type="date" id="date_debut">
+<input type="date" id="date_fin">
+<select id="shift"><option>All</option></select>
+<select id="equipe"><option>All</option></select>
+<select id="zone"><option>All</option></select>
+<select id="prototype"><option>All</option></select>
+<select id="projet"><option></option></select>
+<select id="famille"><option></option></select>
+<select id="version"><option></option></select>
+<select id="type"><option>All</option><option>scrap</option><option>retouche1</option><option>retouche2</option></select>
+</form>
+
+<button id="btn">go</button>
+        <div class="row">
+        
+        	<div class="col-md-6">
+     
+        		<canvas id="myChart" width="400" height="400"></canvas>
+        	
+        	</div>
+        	
+        	<div class="col-md-6">
+        		<div class="row">
+        			<div class="col-md-6">
+        			   
+        		
+        				<p id="projet0"></p>
+		                <canvas id="myChart0" width="400" height="400"></canvas>
+		               
+		               
+        			</div>
+        			<div class="col-md-6">
+        			
+        				<p id="projet1"></p>
+		                <canvas id="myChart1" width="400" height="400"></canvas>
+		            
+		                
+        			</div>
+        			<div class="col-md-6">
+        			
+        				<p id="projet2"></p>
+		                <canvas id="myChart2" width="400" height="400"></canvas>
+		                
+        			</div>
+        			<div class="col-md-6">
+        			
+        				<p id="projet3"></p>
+		                <canvas id="myChart3" width="400" height="400"></canvas>
+		                
+        			</div>
+        		</div>
+        	</div>
+        	
+        </div>
+		
+
+		
+
+		
+		
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/Chart.js"></script>
+ <script>
+ $(document).ready(function(){
+	 
+	  token = new URL(window.location.href).searchParams.get("token");
+	 
+     $('#btn').click(function(){
+          $.ajax({
+                url:'../rapport/defauts',
+                type:'post',
+                data:{_csrf : token,
+                	 date_debut:$('#date_debut').val(),
+                	 date_fin:$('#date_fin').val(),
+                	 zone:$('#zone').val(),
+                	 equipe:$('#equipe').val(),
+                	 shift:$('#shift').val(),
+                	 prototype:$('#prototype').val(),
+                	 projet:$('#projet').val(),
+                	 famille:$('#famille').val(),
+                	 version:$('#version').val(),
+                	 type:$('#type').val()
+                	 },
+                success:function(d){
+                    
+                    var labels = [];
+               	    var defauts = [];
+                    var json = JSON.parse(d);
+                    console.log(json[4]);
+                    json[4].forEach(function(e){
+                   	labels.push(e.defaut);
+                   	defauts.push(e.qte);
+                    });
+                   show(labels,defauts);
+                   var projet_labels = [];
+                   var defaut_qte = [];
+                   var i=0;
+                   while(i<4){
+                	   
+                	   json[i].forEach(function(e){
+                		   projet_labels.push(e.projet);
+                		   defaut_qte.push(e.qte);
+                           });
+                	   showdetaille(i,projet_labels,defaut_qte);
+                	   $('#projet'+i).html(json[4][i].defaut)
+                	   projet_labels = [];
+                       defaut_qte = [];
+                	   i++;
+                   }
+                  
+                   
+                 }
+           });
+      });
+     function show(a,b){
+		  var my_chart = document.getElementById('myChart').getContext('2d');
+		  var chart = new Chart(my_chart,{
+			  type:'bar',
+			  data:{
+				  labels:a,
+				  datasets:[{
+					  label:'defauts',
+					  data:b
+				  }]
+			  },
+			  options: {
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                    beginAtZero:true
+			                }
+			            }]
+			        }
+			    }
+			  
+		  });
+		 
+	  }
+     
+     function showdetaille(x,a,b){
+		  var my_chart = document.getElementById('myChart'+x).getContext('2d');
+		  var chart = new Chart(my_chart,{
+			  type:'bar',
+			  data:{
+				  labels:a,
+				  datasets:[{
+					  label:'defauts',
+					  data:b
+				  }]
+			  },
+			  options: {
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                    beginAtZero:true
+			                }
+			            }]
+			        }
+			    }
+			  
+		  });
+		 
+	  }
+ });
+ </script>
+ </div>
+</body>
+</html>

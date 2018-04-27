@@ -8,6 +8,7 @@ public class PrixWrapper {
 	private Double priceP;
 	private Double poidsP;
 	private String version;
+	private String prototype;
 	
 	
 	
@@ -46,6 +47,12 @@ public class PrixWrapper {
 	}
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	public String getPrototype() {
+		return prototype;
+	}
+	public void setPrototype(String prototype) {
+		this.prototype = prototype;
 	}
 	
 	

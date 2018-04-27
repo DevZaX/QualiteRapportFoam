@@ -58,22 +58,12 @@ public class PieceController {
 	}
 	
 	@RequestMapping(value="pieces/update",method=RequestMethod.POST)
-	public String update(@RequestParam("ref")String ref,@RequestParam("priceappt")Double priceappt,Principal principal)
+	public String update(@RequestParam("ref")String ref,@RequestParam("priceappt")Double priceappt,Principal principal,@RequestParam("prototype")String prototype)
 	{
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
 		
-		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
 	    Piece piece = pieceService.find(ref);
 	    piece.setPrice(priceappt);
+	    piece.setPrototype(prototype);
 	    pieceService.update(piece);
 		return "redirect:/pieces/index";
 	}

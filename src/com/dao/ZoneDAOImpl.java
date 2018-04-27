@@ -131,5 +131,11 @@ public class ZoneDAOImpl implements ZoneDAO {
 		query.setParameter("title", poste_name);
 		return (PosteForPiece) query.uniqueResult();
 	}
+	
+	@Override
+	public PosteForPiece findPosteForPieceById(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		return (PosteForPiece) session.load(PosteForPiece.class, new Long(id));
+	}
 
 }

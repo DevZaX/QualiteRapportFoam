@@ -7,6 +7,8 @@ public class ProjetIndex {
 	private Long familleId;
 	
 	private String picture;
+	
+   private String prototype;
 
 	
 
@@ -109,6 +111,14 @@ public class ProjetIndex {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getPrototype() {
+		return prototype;
+	}
+
+	public void setPrototype(String prototype) {
+		this.prototype = prototype;
 	}
 
 	

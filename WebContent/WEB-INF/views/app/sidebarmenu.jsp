@@ -7,7 +7,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="<c:url value="../images/admin.png" />" alt="..." class="img-circle profile_img">
+                <img src="<c:url value=" ${pageContext.request.contextPath}/images/admin.png" />" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Bonjour</span>

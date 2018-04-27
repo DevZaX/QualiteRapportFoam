@@ -98,18 +98,7 @@ public class ControlReceptionController {
 			Principal p) throws ParseException
 	{
 		
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
 		
-		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
 		
 		Empiecement empiecement = empiecementService.getEmpiecementByRef(controlReceptionWrapper.getRef());
 		
@@ -140,6 +129,11 @@ public class ControlReceptionController {
 	public String index(ModelMap map,Principal p)
 	{
 		List<String> roles = new ArrayList<>();
+		roles.add("Technicient qualite");
+		roles.add("Responsable qualite");
+		roles.add("Injenieur qualite");
+		roles.add("Coordinatrice");
+		roles.add("Controlleur reception");
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
 		roles.add("Injenieur qualite");
@@ -203,6 +197,8 @@ public class ControlReceptionController {
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
 		roles.add("Injenieur qualite");
+		roles.add("Coordinatrice");
+		roles.add("Controlleur reception");
 	
 		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
 		

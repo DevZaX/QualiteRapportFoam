@@ -23,5 +23,9 @@ public interface DefautControlService {
 	public DefautControl getDefautControlByControlIdAndTypeAndCode(Long id,String type,String code);
 
 	public void update(DefautControl dc);
+	
+	public List<DefautControl> fetchAll();
+	
+	public DefautControl find(Long id);
 
 }

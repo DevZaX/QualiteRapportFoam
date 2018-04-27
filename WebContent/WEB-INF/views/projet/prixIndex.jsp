@@ -46,11 +46,22 @@
                   <div class="x_content">
                      <table id="data" class="table table-bordered">
                      	<thead>
+                     	    <c:if test="${utilisateur.getLangue() == 'francais' }">
                      		<th style="background-color:#26B99A;color:white;">Référence</th>
                      		<th style="background-color:#26B99A;color:white;">Designation</th>
+                     		<th style="background-color:#26B99A;color:white;">Prototype</th>
                      		<th style="background-color:#26B99A;color:white;">Prix d'appui-tete</th>
                      		<th style="background-color:#26B99A;color:white;">Prix de produit chimie</th>
                      		<th style="background-color:#26B99A;color:white;">Poids de produit chimie</th>
+                     		</c:if>
+                     		 <c:if test="${utilisateur.getLangue() == 'anglais' }">
+                     		<th style="background-color:#26B99A;color:white;">Reference</th>
+                     		<th style="background-color:#26B99A;color:white;">Designation</th>
+                     		<th style="background-color:#26B99A;color:white;">Prototype</th>
+                     		<th style="background-color:#26B99A;color:white;">Headrest price</th>
+                     		<th style="background-color:#26B99A;color:white;">Chimique product price</th>
+                     		<th style="background-color:#26B99A;color:white;">Chimique product weight</th>
+                     		</c:if>
                      		<th></th>
                      	</thead>
                      	<tbody>
@@ -58,6 +69,7 @@
                      			<tr>
                      				<td>${e.getRef() }</td>
                      				<td>${e.getVersion() }</td>
+                     				<td>${e.getPrototype() }</td>
                      				<td>${e.getPriceA() } &euro;</td>
                      				<td>${e.getPriceP() } &euro;</td>
                      				<td>${e.getPoidsP() } &euro;</td>

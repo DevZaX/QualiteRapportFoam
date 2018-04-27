@@ -9,7 +9,7 @@
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="refresh" content="10">
+<!--     <meta http-equiv="refresh" content="10"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Qualite Rapport Foam</title>
@@ -29,7 +29,7 @@
    
    		<div class="col-md-8" style="border-right: 1px solid black;">
    			<div style="border-bottom: 1px solid black;width:100%;height:50px;">
-   			<h1 style="text-align:center;color:red;">Contrôle Mur</h1>
+   			<h1 style="text-align:center;color:red;">Contrôle</h1>
    			</div>
    			<div class="row" style="margin-top:10px;line-height: 0.6em">
    				<div class="col-md-6 col-md-offset-1">
@@ -101,7 +101,7 @@
    				</div>
    				</div>
    				<div class="col-md-6">
-   				<div style="padding:5px;border:1px solid black;margin:30px 20px;;text-align:center;">
+   				<div style="padding:5px;border:1px solid black;margin:30px 20px;text-align:center;">
    				
 
    			
@@ -160,36 +160,40 @@
    				</div>
    			</div>
    			<div ><h2 style="text-align:center;color:red;">defaut : ${alert.getDefaut() }</h2></div>
-   			<div><img src="data:image/jpeg;base64,${ alert_picture}" alt="image" width=700 /></div>
+   			<div><img src="data:image/jpeg;base64,${ alert_picture}" alt="image" width="500"  /></div>
    			<div style="margin-top:15px;"><center><b><p>${alert.getMsg() }</p></b></center></div>
    		</div>
    		</c:if>
    
    </div>
+   
+   <script>
+   function activer(){
+   	$('#ref').focus();
+   }
+   </script>
      	
- 
+ <c:if test="${picture != null }">
      <script>
      
     var typeG = "";
     
     $('#scrap').click(function(){
     	typeG="scrap";
-    	$('p#actuel').text='type actuel : scrap';
+    	$('p#actuel').html('type actuel : scrap');
     	
     });
     $('#retouche1').click(function(){
     	typeG="retouche1";
-    	$('#actuel').innerHTML="type actuel : retouche1";
+    	$('#actuel').html('type actuel : retouche1');
     });
     $('#retouche2').click(function(){
  	    typeG="retouche2";
- 	   $('#actuel').innerHTML="type actuel : retouche2";
+ 	   $('#actuel').html('type actuel : retouche2');
  
     });
      
-    function activer(){
-    	$('#ref').focus();
-    }
+   
     
     $('#ok').click(function(){
     	if($('#ref').val() != ''){
@@ -197,7 +201,7 @@
     		var data = {
     			 _csrf:'${_csrf.token}',
                	 ref:$('#ref').val(),
-               	 code:'',
+               	 code:'ok',
                	 type:'ok',
                	 equipe:$('#equipe').val(),
                	 matricule:$('#mat').val(),
@@ -212,8 +216,9 @@
                  type:'post',
                  data:data, 
                  success:function(d){
-                       
-                	 $('#ref').value ="";
+                     console.log('sucess');  
+                     $('#ref').html("");
+                	 $('#actuel').html('controle ajouter avec success !');
                  }
         });	
     	}
@@ -241,7 +246,8 @@
                     data:data, 
                     success:function(d){
                         console.log("success");  
-                    	$('#ref').value ="";
+                    	$('#ref').html("");
+                    	 $('#actuel').html('controle ajouter avec success !');
                     }
            });	
     		
@@ -250,6 +256,7 @@
     }
   
     </script>
+    </c:if>
     <!-- Bootstrap -->
     <script src="<c:url value='/js/bootstrap.min.js' />"></script>
   </body>

@@ -2,6 +2,7 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.model.AlertInjection;
 import com.model.Piece;
 import com.model.Projet;
+import com.model.Utilisateur;
 import com.service.AlertInjectionService;
 import com.service.PieceService;
 import com.service.ProjetService;
@@ -57,27 +59,57 @@ public class AlertInjectionController {
 	}
 	
 	@RequestMapping(value="alert_injection/index",method=RequestMethod.GET)
-	public String index(ModelMap map)
+	public String index(ModelMap map,Principal p)
 	{
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		List<AlertInjection> alertInjections = alertInjectionService.fetchAll();
 		map.addAttribute("alertInjections",alertInjections);
+		map.addAttribute("utilisateur",u);
 		return "alert_injection/index";
 	}
 	
 	@RequestMapping(value="alert_injection/create",method=RequestMethod.GET)
-	public String create(ModelMap map)
+	public String create(ModelMap map,Principal p)
 	{	
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
+
 		map.addAttribute("projets",projetService.fetchAll());
 		map.addAttribute("alertInjectionWrapper",new AlertInjectionWrapper());
+		map.addAttribute("utilisateur",u);
 		return "alert_injection/create";
 	}
 	
 	@RequestMapping(value="alert_injection/store",method=RequestMethod.POST)
 	public String store(ModelMap map,
 			@ModelAttribute("alertInjectionWrapper")AlertInjectionWrapper alertInjectionWrapper,
-			RedirectAttributes redirectAttributes) throws ParseException, IOException
+			RedirectAttributes redirectAttributes,Principal p) throws ParseException, IOException
 	{	
-		
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
+	
 		List<String> msgs = new ArrayList<>();
 		
 		
@@ -105,11 +137,21 @@ public class AlertInjectionController {
 	}
 	
 	@RequestMapping(value="alert_injection/{alert_injection_id}/show",method=RequestMethod.GET)
-	public String show(ModelMap map,@PathVariable("alert_injection_id") Long alert_injection_id) throws UnsupportedEncodingException {
-		
+	public String show(ModelMap map,@PathVariable("alert_injection_id") Long alert_injection_id,Principal p) throws UnsupportedEncodingException {
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
+
 		AlertInjection alert = alertInjectionService.find(alert_injection_id);
 		map.addAttribute("alert",alert);
 		map.addAttribute("alert_picture",new String(Base64.encodeBase64(alert.getPicture()),"UTF-8"));
+		map.addAttribute("utilisateur",u);
 		return "alert_injection/show";
 	}
 	
@@ -117,7 +159,16 @@ public class AlertInjectionController {
 	
 	
 	@RequestMapping(value="alert_injection/{alert_injection_id}/edit",method=RequestMethod.GET)
-	public String edit(ModelMap map,@PathVariable("alert_injection_id") Long alert_injection_id){
+	public String edit(ModelMap map,@PathVariable("alert_injection_id") Long alert_injection_id,Principal p){
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		
 		AlertInjection alert = alertInjectionService.find(alert_injection_id);
 		AlertInjectionWrapper alertInjectionWrapper = new AlertInjectionWrapper();
@@ -130,6 +181,7 @@ public class AlertInjectionController {
 		
 		map.addAttribute("alertInjectionWrapper",alertInjectionWrapper);
 		map.addAttribute("id",alert_injection_id);
+		map.addAttribute("utilisateur",u);
 		
 		
 		return "alert_injection/edit";
@@ -137,17 +189,33 @@ public class AlertInjectionController {
 	
 	@RequestMapping(value="alert_injection/{alert_injection_id}/delete",method=RequestMethod.GET)
 	public String delete(ModelMap map,@PathVariable("alert_injection_id") Long alert_injection_id,
-			HttpServletRequest request){
-		
+			HttpServletRequest request,Principal p){
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		alertInjectionService.delete(alertInjectionService.find(alert_injection_id));
 		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping(value="alert_injection/update",method=RequestMethod.POST)
 	public String update(@ModelAttribute("alertInjectionWrapper")AlertInjectionWrapper alertInjectionWrapper,
-			@RequestParam("id")Long id,
+			@RequestParam("id")Long id,Principal p,
 			HttpServletRequest request) throws ParseException{
-		
+		    List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		AlertInjection alertInjection = alertInjectionService.find(id);
 		
 		alertInjection.setClient(alertInjectionWrapper.getClient());
@@ -163,13 +231,21 @@ public class AlertInjectionController {
 	}
 	
 	@RequestMapping(value="alert_injection/{id}/edit_picture",method=RequestMethod.GET)
-	public String edit_picture(@PathVariable("id")Long id,ModelMap map) throws UnsupportedEncodingException{
+	public String edit_picture(@PathVariable("id")Long id,ModelMap map,Principal p) throws UnsupportedEncodingException{
 		
-		
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		map.addAttribute("alert_picture",new String(Base64.encodeBase64(alertInjectionService.find(id).getPicture()),"UTF-8"));
 		map.addAttribute("id",id);
 		map.addAttribute("alertInjectionWrapper",new AlertInjectionWrapper());
-		
+	    map.addAttribute("utilisateur",u);
 
 		return "alert_injection/edit_picture";
 	}
@@ -179,7 +255,16 @@ public class AlertInjectionController {
 	@RequestMapping(value="alert_injection/update_picture",method=RequestMethod.POST)
 	public String update_picture(@RequestParam("id")Long id,
 			@ModelAttribute("alertInjectionWrapper")AlertInjectionWrapper alertInjectionWrapper,
-			HttpServletRequest request) throws IOException {
+			HttpServletRequest request,Principal p) throws IOException {
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		AlertInjection alert = alertInjectionService.find(id);
 		alert.setPicture(alertInjectionWrapper.getImage().getBytes());
 		alertInjectionService.update(alert);

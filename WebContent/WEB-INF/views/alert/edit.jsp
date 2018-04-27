@@ -4,11 +4,8 @@
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            
-<%@ include file="../app/sidebarmenu.jsp" %>
-
-           
+          <div class="left_col scroll-view">        
+              <%@ include file="../app/sidebarmenu.jsp" %>
           </div>
         </div>
 
@@ -19,7 +16,13 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
+                 <c:if test="${utilisateur.getLangue() == 'francais' }">
+                <h3><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Acceuil > Références > create</h3>
+                </c:if>
+                
+                 <c:if test="${utilisateur.getLangue() == 'anglais' }">
                 <h3><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home > References > create</h3>
+                </c:if>
               </div>
 
               
@@ -31,7 +34,13 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nouveau reference</h2>
+                      <c:if test="${utilisateur.getLangue() == 'francais' }">
+                      <h2>Nouveau reference</h2>
+                      </c:if>
+                      
+                      <c:if test="${utilisateur.getLangue() == 'anglais' }">
+                      <h2>New reference</h2>
+                      </c:if>
                     
                     <div class="clearfix"></div>
                   </div>

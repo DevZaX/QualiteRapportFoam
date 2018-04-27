@@ -47,6 +47,7 @@
                   <div class="x_content">
         
         <div class="container">
+        <c:if test="${utilisateur.getLangue() == 'francais' }">
         <form:form action="../../../prix/update" method="POST" modelAttribute="prixWrapper">
         	<button type="submit" class="btn btn-success"><i class="fa fa-save"></i></button>
         	<a href="../prix/index" class="btn btn-success"><i class="fa fa-home"></i></a>
@@ -54,6 +55,13 @@
         		<label class="control-label">Référence</label>
         		<form:input path="ref" type="text" class="form-control" readonly="true" />
         		<form:input path="id" type="hidden" class="form-control" />
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Référence</label>
+        		<form:select path="prototype"  class="form-control" required="required">
+        			<option>Serie</option>
+        			<option>New Project</option>
+        		</form:select>
         	</div>
         	<div class="form-group">
         		<label class="control-label">Designation</label>
@@ -72,6 +80,41 @@
         		<form:input  path="poidsP" type="number" class="form-control" required="required" step="0.01" />
         	</div>
         </form:form>	
+        </c:if>
+            <c:if test="${utilisateur.getLangue() == 'anglais' }">
+        <form:form action="../../../prix/update" method="POST" modelAttribute="prixWrapper">
+        	<button type="submit" class="btn btn-success"><i class="fa fa-save"></i></button>
+        	<a href="../prix/index" class="btn btn-success"><i class="fa fa-home"></i></a>
+        	<div class="form-group">
+        		<label class="control-label">Reference</label>
+        		<form:input path="ref" type="text" class="form-control" readonly="true" />
+        		<form:input path="id" type="hidden" class="form-control" />
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Reference</label>
+        		<form:select path="prototype"  class="form-control" required="required">
+        			<option>Serie</option>
+        			<option>New Project</option>
+        		</form:select>
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Designation</label>
+        		<form:input path="version" type="text" class="form-control" readonly="true" />
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Headrest price</label>
+        		<form:input path="priceA" type="number" class="form-control" required="required" step="0.01" />
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Chimique product price</label>
+        		<form:input path="priceP" type="number" class="form-control" required="required" step="0.01" />
+        	</div>
+        	<div class="form-group">
+        		<label class="control-label">Chimique product weight</label>
+        		<form:input  path="poidsP" type="number" class="form-control" required="required" step="0.01" />
+        	</div>
+        </form:form>	
+        </c:if>
         </div>
                     
                   </div>

@@ -41,28 +41,34 @@
                 <div class="x_panel">
                 
                   
-                  
-<%-- <c:if test="${utilisateur.getLangue() == 'francais' }">                 --%>
-<c:if test="true">
                   <div class="x_content">
-                 
-                  
-               
-                     
-                     
-                     
-                     <table id="data" class="table table-bordered">
+                      <c:if test="${utilisateur.getLangue() == 'francais' }">
+                      <a href="create" class="btn btn-success">Ajouter une piece</a>
+                      </c:if>
+                      <c:if test="${utilisateur.getLangue() == 'anglais' }">
+                      <a href="create" class="btn btn-success">Add a part</a>
+                      </c:if>
+                      <table id="data" class="table table-bordered">
                       <thead>
                         <tr>
+                        <c:if test="${utilisateur.getLangue() == 'francais' }">
                           <th style="background-color:#26B99A;color:white;">Photo</th>
                           <th style="background-color:#26B99A;color:white;">Réf</th>
                           <th style="background-color:#26B99A;color:white;">Version</th>
+                           <th style="background-color:#26B99A;color:white;">Prototype</th>
                           <th style="background-color:#26B99A;color:white;">Famille</th>
-                          <th style="background-color:#26B99A;color:white;">Projet</th>
-                         
+                          <th style="background-color:#26B99A;color:white;">Projet</th>        
                           <th></th>
-                         
-                         
+                          </c:if>
+                           <c:if test="${utilisateur.getLangue() == 'anglais' }">
+                          <th style="background-color:#26B99A;color:white;">Picture</th>
+                          <th style="background-color:#26B99A;color:white;">Ref</th>
+                          <th style="background-color:#26B99A;color:white;">Version</th>
+                           <th style="background-color:#26B99A;color:white;">Prototype</th>
+                          <th style="background-color:#26B99A;color:white;">Family</th>
+                          <th style="background-color:#26B99A;color:white;">Project</th>        
+                          <th></th>
+                          </c:if>
                         </tr>
                       </thead>
                       <tbody>
@@ -73,11 +79,14 @@
                       <td><img src="data:image/jpeg;base64,${item.getPicture() }" width="100" height="100" /></td>   
                       <td><c:out value="${item.getRef() }"></c:out></td>
                       <td><c:out value="${item.getVersion() }"></c:out></td>
+                       <td><c:out value="${item.getPrototype() }"></c:out></td>
                       <td><c:out value="${item.getFamille() }"></c:out></td>
                       <td><c:out value="${item.getTitle() }"></c:out></td>
                      
                       <td>
                            <a href="../projets/<c:out value="${item.getFamilleId() }"></c:out>/<c:out value="${item.getRef() }"></c:out>/delete" onClick="return confirm('voulez vous supprimer cette references ?')" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                           <a href="../projets/${item.getRef() }/show" class="btn btn-warning"><i class="fa fa-eye"></i></a>
+                           
                       </td>
                      
                         </tr>
@@ -93,92 +102,11 @@
           </div>
         </div>
         <!-- /page content -->
- </c:if> 
+
  
  
     
- <c:if test="${utilisateur.getLangue() == 'anglais' }">
-<div class="x_content">
-                  <div class="row">
-                 
-               
-                   
-                  </div>
-                  
-                  <div class="row">
-                  	<div class="col-md-12">
-                  		 <form:form  id="form" action="../projets/store" method="POST" modelAttribute="projetWrapper" enctype="multipart/form-data">
-                  		<table class="table table-bordered">
-                  		<thead>
-                  			<th>Project name</th>
-                  			<th>Family name</th>
-                  			<th>Reference</th>
-                  			<th>Designation</th>
-                  			<th></th>
-                  			
-                  			
-                  			<th></th>
-                  		</thead>
-                  		<tbody>
-                  			<tr>
-                  				<td><form:input path="title" value="${ projetWrapper.title}" placeholder="project" required="required"/></td>
-                  				<td><form:input path="famille" value="${ projetWrapper.famille}" placeholder="family" required="required"/></td>
-                  				<td><form:input path="ref" value="${ projetWrapper.ref}" placeholder="ref" required="required"/></td>
-                  				<td><form:input path="version" value="${ projetWrapper.version}" placeholder="designation" required="required"/></td>
-                  				<td><form:input path="images" type="file" value="${ projetWrapper.images}"  required="required" multiple="multiple"/></td>
-                  				
-                  				<td><button type="submit" class="btn btn-success bl"><i class="fa fa-save"></i> </button></td>		
-                  			</tr>
-                  		</tbody>
-                  		</table>
-                  		</form:form>
-                  	</div>
-                  </div>
-                
-                     <h3>References list</h3>
-                     <table id="data" class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th  style="background-color:#26B99A;color:white;">#</th>
-                          <th  style="background-color:#26B99A;color:white;">Réf</th>
-                          <th  style="background-color:#26B99A;color:white;">Designation</th>
-                          <th  style="background-color:#26B99A;color:white;">Family</th>
-                          <th  style="background-color:#26B99A;color:white;">Project</th>
-                      
-                          <th></th>
-                         
-                         
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <c:set var="count" value="0" scope="page" />
-                      <c:forEach items="${ items}" var="item">
-                        <tr>
-                          <c:set var="count" value="${count + 1}" scope="page"/>
-                          <th ><c:out value="${count}"></c:out></th>
-                          <td><c:out value="${item.getRef() }"></c:out></td>
-                      <td><c:out value="${item.getVersion() }"></c:out></td>
-                      <td><c:out value="${item.getFamille() }"></c:out></td>
-                      <td><c:out value="${item.getTitle() }"></c:out></td>
-                    
-                      <td>
-                      	   <a href="../projets/<c:out value="${item.getRef() }"></c:out>/delete" onClick="return confirm('would you like to delete this reference ?')" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                      </td>
-                     
-                        </tr>
-                    
-                          </c:forEach>
-                      </tbody>
-                    </table>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /page content -->
- </c:if>   
+  
        
          <%@ include file="../app/footer.jsp" %>
          

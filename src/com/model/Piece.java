@@ -26,6 +26,7 @@ public class Piece {
 	private String ref;
 	private String version;
 	private Double price;
+	private String prototype;
 	
 	@OneToMany(orphanRemoval=true,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<PosteForPiece>  posteForPieces = new ArrayList<>();
@@ -109,6 +110,14 @@ public class Piece {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public String getPrototype() {
+		return prototype;
+	}
+
+	public void setPrototype(String prototype) {
+		this.prototype = prototype;
 	}
 
 	

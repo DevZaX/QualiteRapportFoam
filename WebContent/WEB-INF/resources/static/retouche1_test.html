@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+<div class="row">
+	<div class="col-md-12">
+		<h1>Taux de retouche1</h1>
+		<form>
+		 <input type="date" id="date_debut">
+         <input type="date" id="date_fin">
+          <button type="button" id="filter_retouche1" class="btn btn-danger"><i class="fa fa-filter"></i></button>
+		</form>
+		 <canvas id="retouche1" style="width: 50%; height: 25vh"></canvas>
+		
+	</div>
+	</div>
+	
+	<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+		<h1>Top defaut</h1>
+		<form>
+		 <input type="date" id="date_debut_defaut">
+         <input type="date" id="date_fin_defaut">
+         <button type="button" id="filter_defaut" class="btn btn-danger"><i class="fa fa-filter"></i></button>
+		</form>
+		
+		 <canvas id="defaut" style="width: 50%; height: 25vh"></canvas>
+    </div></div></div>
+    
+    
+    
+    <div class="container">
+	<div class="row">
+	<div class="col-md-12">
+	 <h1>projets par defaut</h1>
+		
+		<form>
+		 <input type="date" id="date_debut_defaut_projet">
+         <input type="date" id="date_fin_defaut_projet">
+         <input type="text" id="projet">
+         <button type="button" id="filter_defaut_projet" class="btn btn-danger"><i class="fa fa-filter"></i></button>
+		</form>
+		 <canvas id="defaut_projet" style="width: 50%; height: 25vh"></canvas>
+    </div></div></div>
+    
+    
+    <div class="container">
+	<div class="row">
+	<div class="col-md-12">
+		<h1>defauts par projet</h1>
+		<form>
+		 <input type="date" id="date_debut_projet_defaut">
+         <input type="date" id="date_fin_projet_defaut">
+         <input type="text" id="ziko">
+         <button type="button" id="filter_projet_defaut" class="btn btn-danger"><i class="fa fa-filter"></i></button>
+		</form>
+		 <canvas id="projet_defaut" style="width: 50%; height: 25vh"></canvas>
+    </div></div></div>
+
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/Chart.js"></script>
+<script>
+	$(document).ready(function(){
+		token = new URL(window.location.href).searchParams.get("token");
+		$('#filter_retouche1').click(function(){
+			var retouche1_projet_labels = [];
+			var retouche1_projet_values = [];
+			$.ajax({
+				url:'../rapport/retouche1_test',
+				type:'post',
+				data:{
+					_csrf:token,
+					date_debut:$('#date_debut').val(),
+					date_fin:$('#date_fin').val()
+				},
+				success:function(data){
+					data = JSON.parse(data);
+					data = data.retouche1_par_projet;
+					data.forEach(function(e){
+						retouche1_projet_labels.push(e.projet);
+						retouche1_projet_values.push(e.retouche1);
+					});
+					show_retouche1(retouche1_projet_labels,retouche1_projet_values);
+				}
+			});
+		});
+		$('#filter_defaut').click(function(){
+			var top_defaut_labels = [];
+			var top_defaut_values = [];
+			$.ajax({
+				url:'../rapport/retouche1_defaut',
+				type:'post',
+				data:{
+					_csrf:token,
+					date_debut_defaut:$('#date_debut_defaut').val(),
+					date_fin_defaut:$('#date_fin_defaut').val()
+				},
+				success:function(data){
+					data = JSON.parse(data);
+					data = data.top_defaut;
+					console.log(data)
+					data.forEach(function(e){
+						top_defaut_labels.push(e.defaut);
+						top_defaut_values.push(e.qte);
+					});
+					show_top_defaut(top_defaut_labels,top_defaut_values);
+				}
+			});
+		});
+		$('#filter_defaut_projet').click(function(){
+			var top_defaut_projet_labels = [];
+			var top_defaut_projet_values = [];
+			$.ajax({
+				url:'../rapport/retouche1_defaut_projet',
+				type:'post',
+				data:{
+					_csrf:token,
+					date_debut_defaut:$('#date_debut_defaut_projet').val(),
+					date_fin_defaut:$('#date_fin_defaut_projet').val(),
+					projet:$('#projet').val()
+				},
+				success:function(data){
+					console.log(data);
+					data = JSON.parse(data);
+					data = data.top_defaut;
+					console.log(data)
+					data.forEach(function(e){
+						top_defaut_projet_labels.push(e.defaut);
+						top_defaut_projet_values.push(e.qte);
+					});
+					show_top_defaut_projet(top_defaut_projet_labels,top_defaut_projet_values);
+				}
+			});
+		});
+		$('#filter_projet_defaut').click(function(){
+		
+			var top_projets_defaut_labels = [];
+			var top_projets_defaut_values = [];
+			$.ajax({
+				url:'../rapport/retouche1_projet_defaut',
+				type:'post',
+				data:{
+					_csrf:token,
+					date_debut_projet_defaut:$('#date_debut_projet_defaut').val(),
+					date_fin_projet_defaut:$('#date_fin_projet_defaut').val(),
+					defaut:$('#ziko').val()
+				},
+				success:function(data){
+					console.log(data);
+					data = JSON.parse(data);
+					data = data.top_projets;
+					console.log(data)
+					data.forEach(function(e){
+						top_projets_defaut_labels.push(e.projet);
+						top_projets_defaut_values.push(e.qte);
+					});
+					show_top_projet_defaut(top_projets_defaut_labels,top_projets_defaut_values);
+				}
+			});
+		});
+		 function show_retouche1(a,b){
+			  var my_chart = document.getElementById('retouche1').getContext('2d');
+			  var chart = new Chart(my_chart,{
+				  type:'bar',
+				  data:{
+					  labels:a,
+					  datasets:[{
+						  label:'retouche1',
+						  data:b
+					  }]
+				  },
+				  options: {
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				  
+			  });
+		  }
+		 function show_top_defaut(a,b){
+			  var my_chart = document.getElementById('defaut').getContext('2d');
+			  var chart = new Chart(my_chart,{
+				  type:'bar',
+				  data:{
+					  labels:a,
+					  datasets:[{
+						  label:'retouche1',
+						  data:b
+					  }]
+				  },
+				  options: {
+					   
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				  
+			  });
+		  }
+		 function show_top_defaut_projet(a,b){
+			  var my_chart = document.getElementById('defaut_projet').getContext('2d');
+			  var chart = new Chart(my_chart,{
+				  type:'bar',
+				  data:{
+					  labels:a,
+					  datasets:[{
+						  label:'retouche1',
+						  data:b
+					  }]
+				  },
+				  options: {
+					   
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				  
+			  });
+		  }
+		 function show_top_projet_defaut(a,b){
+			  var my_chart = document.getElementById('projet_defaut').getContext('2d');
+			  var chart = new Chart(my_chart,{
+				  type:'bar',
+				  data:{
+					  labels:a,
+					  datasets:[{
+						  label:'retouche1',
+						  data:b
+					  }]
+				  },
+				  options: {
+					   
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				  
+			  });
+		  }
+	});
+</script>
+</body>
+</html>

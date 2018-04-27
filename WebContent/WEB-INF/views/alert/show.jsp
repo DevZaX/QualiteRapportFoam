@@ -10,13 +10,13 @@
  
 
           
-<%@ include file="../app/sidebarmenu2.jsp" %>
+<%@ include file="../app/sidebarmenu.jsp" %>
 
            
           </div>
         </div>
 
-       <%@ include file="../app/topnavigation2.jsp" %>
+       <%@ include file="../app/topnavigation.jsp" %>
 
         <!-- page content -->
         <div class="right_col" role="main">

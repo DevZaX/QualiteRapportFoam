@@ -64,4 +64,22 @@ public class DefautControlServiceImpl implements DefautControlService {
 		return defautControlDAO.getDefautControlByControlIdAndTypeAndCode(id, type,code);
 	}
 
+
+
+
+	@Override
+	@Transactional
+	public List<DefautControl> fetchAll() {
+		return defautControlDAO.fetchAll();
+	}
+
+
+
+
+	@Override
+	@Transactional
+	public DefautControl find(Long id) {
+		return defautControlDAO.find(id);
+	}
+
 }

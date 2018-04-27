@@ -32,5 +32,7 @@ public interface ZoneService {
 	public void deletePosteForPiece(PosteForPiece posteForPiece);
 
 	public PosteForPiece findPosteForPieceByTitle(String poste_name);
+	
+	PosteForPiece findPosteForPieceById(Long id);
 
 }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="../rapport/scrap" method="POST">
+	
+				
+						
+							<label class="control-label">date debut:</label>
+							<input id="date1"  type="date" name="date_debut"  required="required">
+						
+				
+					
+					
+							<label class="control-label">date fin:</label>
+							<input id="date2"  type="date" name="date_fin" required="required">
+						
+				<select id="critere" name="critere"><option>projet</option><option>famille</option><option>designation</option><option>mur</option></select>
+		</form>
+		<button id="test">Go</button>
+		<div style="width:400px;height:400px;">
+		<canvas id="myChart" width="400" height="400"></canvas>
+		</div>
+		     <script src="../js/jquery.min.js"></script>
+		     <script src="../js/Chart.js"></script>
+		  <script>
+		  $(document).ready(function(){
+			  token = new URL(window.location.href).searchParams.get("token");
+		      $('#test').click(function(){
+		    	  var labels = [];
+		    	  var criteres = [];
+		           $.ajax({
+		                 url:'../rapport/scrap',
+		                 type:'post',
+		                 data:{_csrf : token,critere:$('#critere').val(),date_debut:$('#date1').val(),date_fin:$('#date2').val()},
+		                 success:function(d){
+		                     console.log(d);
+		                     var json = JSON.parse(d);
+		                     json.forEach(function(e){
+		                    		labels.push(e.critere);
+				                    criteres.push((e.scrap).toFixed(2));
+ 
+		                     });
+		                    show(labels,criteres);
+		                  }
+		            });
+		       });
+		  });
+		  function show(a,b){
+			  var my_chart = document.getElementById('myChart').getContext('2d');
+			  var chart = new Chart(my_chart,{
+				  type:'bar',
+				  data:{
+					  labels:a,
+					  datasets:[{
+						  label:'scrap',
+						  data:b
+					  }]
+				  },
+				  options: {
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+				                    beginAtZero:true
+				                }
+				            }]
+				        }
+				    }
+				  
+			  });
+		  }
+		  </script>
+		 
+</body>
+</html>

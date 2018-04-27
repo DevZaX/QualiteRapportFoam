@@ -34,6 +34,9 @@
     
     <!-- Custom Theme Scripts -->
     <script src="<c:url value='/js/custom.min.js' />"></script>
+    
+    <!-- Chart -->
+     <script src="<c:url value='/js/Chart.js' />"></script>
      
      <script>
        var table =  $('#data').DataTable();

@@ -84,6 +84,7 @@ public class DefautControlReceptionController {
 		map.addAttribute("defautControlReceptions",defautControlReceptions);
 		map.addAttribute("id",id);
 		map.addAttribute("defautControlReception",new DefautControlReception());
+		map.addAttribute("utilisateur",u);
 		return "defautcr/create";
 	}
 	
@@ -93,20 +94,6 @@ public class DefautControlReceptionController {
 			@RequestParam("qte")int qte,
 			HttpServletRequest request)
 	{
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-		roles.add("Coordinatrice");
-		roles.add("Controlleur reception");
-	
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
-		
-		
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
 		
 		ControlReception controlReception = controlReceptionService.find(id);
 		DefautControlReception defautControlReception = new DefautControlReception();
@@ -129,7 +116,7 @@ public class DefautControlReceptionController {
 	
 	@RequestMapping(value="defaut_controle_reception/{id}/delete",method=RequestMethod.GET)
 	
-	public String destroy(@PathVariable("id")Long id,Principal p,HttpServletRequest request)
+	public String destroy(@PathVariable("id")Long id,Principal p,HttpServletRequest request,ModelMap map)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -160,12 +147,7 @@ public class DefautControlReceptionController {
 		
 		controlReceptionService.update(controlReception);
 		
-        //defautControlReceptionService.delete(id);
-		
-		//defautControlReception.setEtat(0);
-		
-	    //defautControlReceptionService.update(defautControlReception);
-		
+		map.addAttribute("utilisateur",u);
 		
 		
 		

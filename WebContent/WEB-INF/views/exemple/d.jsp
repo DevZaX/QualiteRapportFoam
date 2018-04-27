@@ -160,36 +160,40 @@
    				</div>
    			</div>
    			<div ><h2 style="text-align:center;color:red;">defaut : ${alert.getDefaut() }</h2></div>
-   			<div><img src="data:image/jpeg;base64,${ alert_picture}" alt="image" width=700 /></div>
+   			<div><img src="data:image/jpeg;base64,${ alert_picture}" alt="image" width="500"  /></div>
    			<div style="margin-top:15px;"><center><b><p>${alert.getMsg() }</p></b></center></div>
    		</div>
    		</c:if>
    
    </div>
+   
+   <script>
+   function activer(){
+   	$('#ref').focus();
+   }
+   </script>
      	
- 
+ <c:if test="${picture != null }">
      <script>
      
     var typeG = "";
     
     $('#scrap').click(function(){
     	typeG="scrap";
-    	$('p#actuel').text='type actuel : scrap';
+    	$('p#actuel').html('type actuel : scrap');
     	
     });
     $('#retouche1').click(function(){
     	typeG="retouche1";
-    	$('#actuel').innerHTML="type actuel : retouche1";
+    	$('#actuel').html('type actuel : retouche1');
     });
     $('#retouche2').click(function(){
  	    typeG="retouche2";
- 	   $('#actuel').innerHTML="type actuel : retouche2";
+ 	   $('#actuel').html('type actuel : retouche2');
  
     });
      
-    function activer(){
-    	$('#ref').focus();
-    }
+   
     
     $('#ok').click(function(){
     	if($('#ref').val() != ''){
@@ -197,7 +201,7 @@
     		var data = {
     			 _csrf:'${_csrf.token}',
                	 ref:$('#ref').val(),
-               	 code:'',
+               	 code:'ok',
                	 type:'ok',
                	 equipe:$('#equipe').val(),
                	 matricule:$('#mat').val(),
@@ -213,7 +217,11 @@
                  data:data, 
                  success:function(d){
                      console.log('sucess');  
-                	 $('#ref').value ="";
+                     $('#ref').html("");
+                	 $('#actuel').html('controle ajouter avec success !');
+                	 setTimeout(() => {
+                       $('#actuel').html('');
+					}, 1500);
                  }
         });	
     	}
@@ -241,7 +249,11 @@
                     data:data, 
                     success:function(d){
                         console.log("success");  
-                    	$('#ref').value ="";
+                    	$('#ref').html("");
+                    	 $('#actuel').html('controle ajouter avec success !');
+                    	 setTimeout(() => {
+                             $('#actuel').html('');
+      					}, 1500);
                     }
            });	
     		
@@ -250,6 +262,7 @@
     }
   
     </script>
+    </c:if>
     <!-- Bootstrap -->
     <script src="<c:url value='/js/bootstrap.min.js' />"></script>
   </body>

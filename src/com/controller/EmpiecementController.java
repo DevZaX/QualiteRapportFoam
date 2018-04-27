@@ -37,6 +37,7 @@ public class EmpiecementController {
 	private ProjetService projetService;
 	private FournisseurService fournisseurService;
 	private UtilisateurService utilisateurService;
+
 	
 	@Autowired
 	@Qualifier(value="utilisateurService")
@@ -96,18 +97,6 @@ public class EmpiecementController {
 			@ModelAttribute("empiecement")Empiecement empiecement,
 			BindingResult result,Principal p)
 	{
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-		roles.add("Coordinatrice");
-		roles.add("Controlleur reception");
-		
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
 		
 		empiecement.setProjet(projetService.getProjetByTitle(projet));
 		empiecement.setFournisseur(fournisseur);
@@ -127,18 +116,6 @@ public class EmpiecementController {
 			@RequestParam("projet")String projet,
 			Principal p)
 	{
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-		roles.add("Coordinatrice");
-		roles.add("Controlleur reception");
-		
-		Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
-		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}
 		
 		Empiecement em =  empiecementService.getEmpiecementByRef(ref);
 		em.setFournisseur(fournisseur);
@@ -152,7 +129,7 @@ public class EmpiecementController {
 	
 	
 	@RequestMapping(value="empiecements/{ref}/delete",method=RequestMethod.GET)
-	public String destroy(@PathVariable("ref")String ref,Principal p)
+	public String destroy(@PathVariable("ref")String ref,Principal p,ModelMap map)
 	{
 		List<String> roles = new ArrayList<>();
 		roles.add("Technicient qualite");
@@ -168,6 +145,7 @@ public class EmpiecementController {
 		}
 		Empiecement em =  empiecementService.getEmpiecementByRef(ref);
 		empiecementService.delete(em);
+		map.addAttribute("utilisateur",u);
 		return "redirect:/empiecements/index";
 	}
 

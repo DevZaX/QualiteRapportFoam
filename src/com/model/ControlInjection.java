@@ -51,7 +51,29 @@ public class ControlInjection {
     private String zone;
     private String prototype;
     private String equipe;
+    
+    private String projet;
+    private String famille;
+    private String designation;
 	
+	public String getProjet() {
+		return projet;
+	}
+	public void setProjet(String projet) {
+		this.projet = projet;
+	}
+	public String getFamille() {
+		return famille;
+	}
+	public void setFamille(String famille) {
+		this.famille = famille;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
 	public ControlInjection() {
 		super();
 		// TODO Auto-generated constructor stub

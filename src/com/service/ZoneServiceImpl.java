@@ -128,4 +128,13 @@ public class ZoneServiceImpl implements ZoneService {
 		return zoneDAO.findPosteForPieceByTitle(poste_name);
 	}
 
+
+
+
+	@Override
+	@Transactional
+	public PosteForPiece findPosteForPieceById(Long id) {
+		return zoneDAO.findPosteForPieceById(id);
+	}
+
 }

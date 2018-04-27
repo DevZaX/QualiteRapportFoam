@@ -92,6 +92,16 @@ public class UtilisateurController {
 	
 	 @RequestMapping(value = "users/create", method = RequestMethod.GET)
     public String create(ModelMap model,Principal p) {
+		 
+		    List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 
 		    List<String> roles = new ArrayList<String>();
 		    roles.add("Technicient qualite");
@@ -104,16 +114,23 @@ public class UtilisateurController {
 		    roles.add("Controlleur reception");
 		    model.addAttribute("roles",roles);
 	    	model.addAttribute("utilisateurWrapper", new UtilisateurWrapper());
-	    	Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
-		    model.addAttribute("name",u.getUsername());
-		    model.addAttribute("role",u.getUtilisateurRoles().get(0));
+	    	model.addAttribute("utilisateur",u);
 	        return "user/create";
 	    }
 	 
 	 
 	 @RequestMapping(value="users/store",method=RequestMethod.POST)
-	public String store(@ModelAttribute("utilisateurWrapper")UtilisateurWrapper utilisateurWrapper,BindingResult result)
+	public String store(@ModelAttribute("utilisateurWrapper")UtilisateurWrapper utilisateurWrapper,BindingResult result,Principal p)
 	 {
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		   Utilisateur utilisateur = new Utilisateur();
 		   UtilisateurRole utilisateurRole = new UtilisateurRole();
 		   utilisateur.setUsername(utilisateurWrapper.getUsername());
@@ -132,7 +149,15 @@ public class UtilisateurController {
 	 @RequestMapping(value="users/index",method=RequestMethod.GET)
 	public String index(ModelMap map,Principal p)
 	 {
-		 
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		 List<Utilisateur> utilisateurs = utilisateurService.fetchAll();
 		 List<UtilisateurIndex> items = new ArrayList<>();
 		 for (Utilisateur utilisateur : utilisateurs) {
@@ -155,7 +180,6 @@ public class UtilisateurController {
 		    map.addAttribute("roles",roles);
 		    map.addAttribute("items",items);
 		    map.addAttribute("name",p.getName());
-		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
 		    map.addAttribute("name",u.getUsername());
 		    map.addAttribute("role",u.getUtilisateurRoles().get(0));
 		    
@@ -166,9 +190,17 @@ public class UtilisateurController {
 	 @RequestMapping(value="users/show",method=RequestMethod.GET)
 	public String show(Principal p,ModelMap map)
 	 {
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		 Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
 		 map.addAttribute("user", utilisateur);
-		 Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
 		 map.addAttribute("name",u.getUsername());
 		 map.addAttribute("role",u.getUtilisateurRoles().get(0));
 		 return "user/show";
@@ -177,8 +209,17 @@ public class UtilisateurController {
 	 
 	 
 	 @RequestMapping(value="users/{id}/delete",method=RequestMethod.GET)
-	public String destroy(@PathVariable("id")Long id)
+	public String destroy(@PathVariable("id")Long id,Principal p)
 	 {
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
 		 utilisateurService.delete(id);
 		 return "redirect:/users/index";
 	 }
@@ -187,10 +228,18 @@ public class UtilisateurController {
 	 @RequestMapping(value="users/edit",method=RequestMethod.GET)
 	public String edit(ModelMap map,Principal p)
 	 {
-		 Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
-		 map.addAttribute("user", utilisateur);
-		 map.addAttribute("name",utilisateur.getUsername());
-		 map.addAttribute("role",utilisateur.getUtilisateurRoles().get(0));
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+		    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
+		 map.addAttribute("user", u);
+		 map.addAttribute("name",u.getUsername());
+		 map.addAttribute("role",u.getUtilisateurRoles().get(0));
 		 return "user/edit";
 	 }
 	 
@@ -202,7 +251,16 @@ public class UtilisateurController {
 			               @RequestParam("indice")String indice,
 			               Principal p)
 	 {
-		  Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
+		 List<String> access = new ArrayList<String>();
+		    access.add("Technicient qualite");
+		    access.add("Responsable qualite");
+		    access.add("Injenieur qualite");
+			Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
+		    
+		    if(!access.contains(utilisateur.getUtilisateurRoles().get(0).getRole())) {
+		    	return "denied";
+		    }
+
 		  BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		  utilisateur.setUsername(username);
 		  utilisateur.setPassword(bCryptPasswordEncoder.encode(password));
@@ -241,35 +299,9 @@ public class UtilisateurController {
 		 Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(p.getName());
 		 utilisateur.setLangue(langue);
 		 utilisateurService.update(utilisateur);
-		// return "redirect:/projets/index";
 		 return "redirect:"+request.getHeader("Referer");
 	 }
-	 
-	 
-	 @RequestMapping(value="users/auth",method=RequestMethod.GET)
-	public String auth()
-	 {
-		 return "user/authentification";
-	 }
-	 
-	 
-	 @RequestMapping(value="users/verefication",method=RequestMethod.POST)
-	public String verefication()
-	 {
-		 return "redirect:/users/index";
-	 }
-	 
-	 
-	 // afficher page de control d'injection 
-	 @RequestMapping(value="control_i/index",method=RequestMethod.GET)
-	public String index(ModelMap map)
-	 {
-		 List<Defaut> items = defautService.listDefaut();
-		 map.addAttribute("items",items);
-		 return "control/control_i";
-	 }
-	 
-	 
+
 	 @RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 	        return "login";
@@ -295,28 +327,6 @@ public class UtilisateurController {
 		 return "home";
 	 }
 	 
-	 @RequestMapping(value="1/aa",method=RequestMethod.GET)
-	 public String aa()
-	 {
-		 return "exemple/a";
-	 }
-	 
-	 @RequestMapping(value="1/bb",method=RequestMethod.GET)
-	 public String bb()
-	 {
-		 return "exemple/b";
-	 }
-	 
-	 @RequestMapping(value="1/cc",method=RequestMethod.GET)
-	 public String cc()
-	 {
-		 return "exemple/c";
-	 }
-	 
-	
-	 
-	
-	 
-	
+
 
 }

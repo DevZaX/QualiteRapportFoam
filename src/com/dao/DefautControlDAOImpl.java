@@ -67,4 +67,20 @@ public class DefautControlDAOImpl implements DefautControlDAO {
 		
 	}
 
+
+
+	@Override
+	public List<DefautControl> fetchAll() {
+		Session session = sessionFactory.getCurrentSession();
+		return session.createQuery("from DefautControl").list();
+	}
+
+
+
+	@Override
+	public DefautControl find(Long id) {
+		Session session = sessionFactory.getCurrentSession();
+		return (DefautControl) session.load(DefautControl.class, new Long(id));
+	}
+
 }

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,12 +64,14 @@ public class ProjetController {
 		this.zoneService = zoneService;
 	}
 
+	
 	@Autowired
 	@Qualifier(value="utilisateurService")
 	public void setUtilisateurService(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
 	}
 
+	
 	@Autowired
 	@Qualifier(value="projetService")
 	public void setProjetService(ProjetService projetService) {
@@ -86,22 +90,10 @@ public class ProjetController {
 		this.pieceService = pieceService;
 	}
 
+	
 	@RequestMapping(value="projets/store",method=RequestMethod.POST)
 	public String store(ModelMap map,@ModelAttribute("projetWrapper")ProjetWrapper projetWrapper,BindingResult result,Principal principal,HttpServletRequest servletRequest)
 	{
-		List<String> roles = new ArrayList<>();
-		roles.add("Technicient qualite");
-		roles.add("Responsable qualite");
-		roles.add("Injenieur qualite");
-	
-		//Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
-		
-		
-	/*	if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-		{
-			return "denied";
-		}*/
-		
 		Projet pt = projetService.getProjetByTitle(projetWrapper.getTitle());
 		Famille ft = familleService.getFamilleByTitle(projetWrapper.getFamille());
 		List<MultipartFile> files =projetWrapper.getImages();
@@ -121,6 +113,7 @@ public class ProjetController {
 				Piece pi = new Piece();
 				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
+				pi.setPrototype(projetWrapper.getPrototype());
 				pi.setFamille(f);
 				f.getPieces().add(pi);
 				pi.setFamille(f);
@@ -159,6 +152,7 @@ public class ProjetController {
 				Piece pi = new Piece();
 				pi.setRef(projetWrapper.getRef().toUpperCase());
 				pi.setVersion(projetWrapper.getVersion());
+				pi.setPrototype(projetWrapper.getPrototype());
 				pi.setFamille(f);
 				f.getPieces().add(pi);
 				pieceService.addPiece(pi);
@@ -191,6 +185,7 @@ public class ProjetController {
 			Piece pi = new Piece();
 			pi.setRef(projetWrapper.getRef().toUpperCase());
 			pi.setVersion(projetWrapper.getVersion());
+			pi.setPrototype(projetWrapper.getPrototype());
 			pi.setFamille(ft);
 			ft.getPieces().add(pi);
 			pieceService.addPiece(pi);
@@ -238,14 +233,14 @@ public class ProjetController {
 		roles.add("Qualite client");
 		roles.add("Coordinateur injection");
 	
-//		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
-//		
-//		
-//		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
-//		{
-//			return "denied";
-//		}
-//		
+		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+		
+		
+		if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+		{
+			return "denied";
+		}
+		
 		
 		List<ProjetIndex> items = new ArrayList<>();
 		List<Projet> projets = projetService.getProjets();
@@ -262,20 +257,22 @@ public class ProjetController {
 						 projetIndex.setVersion(piece.getVersion());
 						 projetIndex.setId(projet.getId());
 						 projetIndex.setFamilleId(famille.getId());
-						 byte[] encodeBase64 = Base64.encodeBase64(piece.getImages().get(0).getPicture());
-				         String base64Encoded = new String(encodeBase64, "UTF-8");
-						 projetIndex.setPicture(base64Encoded);
+						 if(piece.getImages().size() != 0) {
+							 byte[] encodeBase64 = Base64.encodeBase64(piece.getImages().get(0).getPicture());
+					         String base64Encoded = new String(encodeBase64, "UTF-8");
+							 projetIndex.setPicture(base64Encoded);
+						 }
+						
+						 projetIndex.setPrototype(piece.getPrototype());
 						 items.add(projetIndex);
-						 
-						 
-					
+
 				}
 			}
 		}
 		
 		map.addAttribute("items", items);
 		map.addAttribute("projetWrapper",new ProjetWrapper());
-		//map.addAttribute("utilisateur",u);
+		map.addAttribute("utilisateur",u);
 		
 		return "projet/index";
 	}
@@ -292,19 +289,22 @@ public class ProjetController {
 		roles.add("Technicient qualite");
 		roles.add("Responsable qualite");
 		roles.add("Injenieur qualite");
-		//Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
-	/*	if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
+		Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	if(!roles.contains(u.getUtilisateurRoles().get(0).getRole()))
 		{
 			return "denied";
-		}*/
+		}
 		
 		Piece piece = pieceService.find(ref);
-		
 		piece.setImages(null);
 		piece.setPosteForPieces(null);
 		pieceService.update(piece);
-		Famille f = piece.getFamille();
-		f.getPieces().remove(piece);
+		Famille f = familleService.find(id);
+		List<Piece> pieces = f.getPieces();
+		f.setPieces(null);
+		familleService.update(f);
+		pieces.remove(piece);
+		f.setPieces(pieces);
 		familleService.update(f);
 		return "redirect:/projets/index";
 	}
@@ -315,19 +315,35 @@ public class ProjetController {
 	public String create(ModelMap map,
 			Principal principal)
 	{
-		//Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(principal.getName());
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
         List<Poste> postes = zoneService.fetchAllPostes() ;
 		map.addAttribute("postes",postes);
 		map.addAttribute("projetWrapper",new ProjetWrapper());
-	//	map.addAttribute("utilisateur",utilisateur);
+	    map.addAttribute("utilisateur",u);
 		return "projet/create";
 	}
 	
 	@RequestMapping(value="prix/index",method=RequestMethod.GET)
-	public String prixIndex(ModelMap map
+	public String prixIndex(ModelMap map,Principal principal
 			)
 	{
-		
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		List<PrixIndex> items = new ArrayList<>();
 		List<Projet> projets = projetService.getProjets();
 		for (Projet projet : projets) {
@@ -342,11 +358,13 @@ public class ProjetController {
 					prixIndex.setPriceA(piece.getPrice());
 					prixIndex.setPriceP(famille.getPrice());
 					prixIndex.setPoidsP(famille.getWeight());
+					prixIndex.setPrototype(piece.getPrototype());
 				    items.add(prixIndex);
 				}
 			}
 		}
 		map.addAttribute("items", items);
+		map.addAttribute("utilisateur",u);
 	
 		return "projet/prixIndex";
 	}
@@ -355,8 +373,17 @@ public class ProjetController {
 	@RequestMapping(value="prix/{ref}/{id}/edit",method=RequestMethod.GET)
 	public String prixEdit(ModelMap map,
 			@PathVariable("id")Long id,
-			@PathVariable("ref")String ref)
+			@PathVariable("ref")String ref,Principal principal)
 	{
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		Piece piece = pieceService.find(ref); 
 		Famille famille = familleService.find(id);
 		PrixWrapper prixWrapper = new PrixWrapper();
@@ -366,7 +393,9 @@ public class ProjetController {
 		prixWrapper.setPriceA(piece.getPrice());
 		prixWrapper.setPriceP(famille.getPrice());
 		prixWrapper.setPoidsP(famille.getWeight());
+		prixWrapper.setPrototype(piece.getPrototype());
 		map.addAttribute("prixWrapper",prixWrapper);
+		map.addAttribute("utilisateur",u);
 		return "projet/prixEdit";
 	}
 	
@@ -375,6 +404,7 @@ public class ProjetController {
 	{
 		 Piece piece = pieceService.find(prixWrapper.getRef());
 		 piece.setPrice(prixWrapper.getPriceA());
+		 piece.setPrototype(prixWrapper.getPrototype());
 		 pieceService.update(piece);
 		 
 		 Famille famille = familleService.find(prixWrapper.getId());
@@ -383,6 +413,77 @@ public class ProjetController {
 		 familleService.update(famille);
 		
 		return "redirect:/prix/index";
+	}
+	
+	
+	@RequestMapping(value="projets/{ref}/show",method=RequestMethod.GET)
+	public String show(@PathVariable("ref")String ref,ModelMap map,Principal principal)
+	{
+		List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(principal.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
+		List<Poste> postes = zoneService.fetchAllPostes() ;
+		map.addAttribute("postes",postes);
+		Map m = new HashMap();
+		Piece p = pieceService.find(ref);
+		List<PosteForPiece> pis = new ArrayList<>();
+		for (PosteForPiece pi : p.getPosteForPieces()) {
+			pis.add(pi);
+		}
+		m.put("ref", ref);
+		m.put("posts", pis);
+		map.addAttribute("model",m);
+		map.addAttribute("projetWrapper",new ProjetWrapper());
+		map.addAttribute("utilisateur",u);
+		return "projet/show";
+	}
+	
+	
+	@RequestMapping(value="projets/update",method=RequestMethod.POST)
+	public String update(@ModelAttribute("projetWrapper")ProjetWrapper projetWrapper,@RequestParam("ref")String ref,HttpServletRequest request) throws IOException
+	{
+		List<MultipartFile> files = projetWrapper.getImages();
+		
+		if(files.get(0).getOriginalFilename().equals("")) {
+			Piece p = pieceService.find(projetWrapper.getRef());
+			p.setPosteForPieces(new ArrayList<PosteForPiece>());
+			for (String title : projetWrapper.getPosts()) {
+				PosteForPiece  posteForPiece = new PosteForPiece();
+				posteForPiece.setPiece(p);
+				posteForPiece.setTitle(title);
+				zoneService.addPosteForPiece(posteForPiece);
+				p.getPosteForPieces().add(posteForPiece);
+			}
+			pieceService.update(p);
+		}else {
+			for (MultipartFile multipartFile : files) {
+				Piece p = pieceService.find(projetWrapper.getRef());
+				p.setImages(new ArrayList<Picture>());
+				pieceService.update(p);
+				Picture picture = new Picture();
+				picture.setPicture(multipartFile.getBytes());
+		        picture.setPiece(p);
+				p.getImages().add(picture);
+				pieceService.update(p);
+				List<PosteForPiece> posteForPieces = p.getPosteForPieces();
+				p.setPosteForPieces(new ArrayList<PosteForPiece>());
+				for (String title : projetWrapper.getPosts()) {
+					PosteForPiece  posteForPiece = new PosteForPiece();
+					posteForPiece.setPiece(p);
+					posteForPiece.setTitle(title);
+					zoneService.addPosteForPiece(posteForPiece);
+					p.getPosteForPieces().add(posteForPiece);
+				}
+				pieceService.update(p);
+			}
+		}
+        return "redirect:"+request.getHeader("Referer");
 	}
 	
 	

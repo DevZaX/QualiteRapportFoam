@@ -8,16 +8,26 @@
 
 	<http auto-config="true">
 		<intercept-url pattern="/zones/**" access="isAuthenticated()" />
-<!-- 		<intercept-url pattern="/defauts/**" access="isAuthenticated()" /> -->
+		<intercept-url pattern="/defauts/**" access="isAuthenticated()" />
 		<intercept-url pattern="/users/recovery" access="permitAll()" />
 		<intercept-url pattern="/users/forgot" access="permitAll()" />
 		<intercept-url pattern="/users/**" access="isAuthenticated()" />
-<!-- 		<intercept-url pattern="/projets/**" access="isAuthenticated()" /> -->
+		<intercept-url pattern="/projets/**" access="isAuthenticated()" />
 		<intercept-url pattern="/empiecements/**" access="isAuthenticated()" />
 		<intercept-url pattern="/familles/**" access="isAuthenticated()" />
 		<intercept-url pattern="/pieces/**" access="isAuthenticated()" />
 		<intercept-url pattern="/controlR/**" access="isAuthenticated()" />
+		<intercept-url pattern="/zone40f/**" access="isAuthenticated()" />
+		<intercept-url pattern="/controle_injection/generale" access="isAuthenticated()" />
+		<intercept-url pattern="/controle_injection/detaille" access="isAuthenticated()" />
+		<intercept-url pattern="/controle_mur/generale" access="isAuthenticated()" />
+		<intercept-url pattern="/controle_mur/detaille" access="isAuthenticated()" />
 		<intercept-url pattern="/defaut_controle_reception/**" access="isAuthenticated()" />
+		<intercept-url pattern="/fournisseurs/**" access="isAuthenticated()" />
+		<intercept-url pattern="/alerts/**" access="isAuthenticated()" />
+	    <intercept-url pattern="/alert_injection/**" access="isAuthenticated()" />
+	    <intercept-url pattern="/dreception/**" access="isAuthenticated()" />
+	    <intercept-url pattern="/phases/**" access="isAuthenticated()" />
 		<form-login login-page="/login" default-target-url="/" authentication-failure-url="/failer"/>
 		<logout logout-url="/logout" logout-success-url="/login"/>
 	</http>

@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model.Alert;
+import com.model.Utilisateur;
 import com.model.Zone40F;
 import com.service.AlertService;
+import com.service.UtilisateurService;
 import com.service.Zone40FService;
 
 @Controller
@@ -26,8 +30,13 @@ public class Zone40FController {
 	
 	private AlertService alertService;
 	
+	private UtilisateurService utilisateurService;
 	
 	
+	@Autowired
+	public void setUtilisateurService(UtilisateurService us){
+		utilisateurService = us;
+	}
 	
     @Autowired
     @Qualifier(value="zone40FService")
@@ -43,12 +52,22 @@ public class Zone40FController {
 
 	@RequestMapping(value="zone40f/{id_alert}/show",method=RequestMethod.GET)
 	public String index(@PathVariable("id_alert")Long id_alert,
-			ModelMap map)
+			ModelMap map,Principal p)
 	{
-		
+
+	    List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		List<Zone40F> zone40fs = zone40FService.fetchAll();
 		map.addAttribute("zone40fs",zone40fs);
 		map.addAttribute("id_alert",id_alert);
+		map.addAttribute("utilisateur",u);
 		return "zone40f/index";
 	}
 	
@@ -71,15 +90,35 @@ public class Zone40FController {
 	}
 	
 	@RequestMapping(value="zone40f/{id}/delete",method=RequestMethod.GET)
-	public String destroy(@PathVariable("id")Long id,HttpServletRequest request)
+	public String destroy(@PathVariable("id")Long id,HttpServletRequest request,Principal p)
 	{
+
+	    List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		zone40FService.delete(id);
-		 return "redirect:"+request.getHeader("Referer");
+		return "redirect:"+request.getHeader("Referer");
 	}
 	
 	@RequestMapping(value="zone40f/{id}/close",method=RequestMethod.GET)
-	public String close(@PathVariable("id")Long id,HttpServletRequest request)
+	public String close(@PathVariable("id")Long id,HttpServletRequest request,Principal p)
 	{
+
+	    List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		 Zone40F zone40f = zone40FService.find(id);
 		 zone40f.setDate_sortie(new Date());
 		 zone40FService.update(zone40f);
@@ -88,13 +127,23 @@ public class Zone40FController {
 	
 	@RequestMapping(value="zone40f/{id}/edit",method=RequestMethod.GET)
 	public String edit(@PathVariable("id")Long id,
-			ModelMap map)
+			ModelMap map,Principal p)
 	{
-		
+
+	    List<String> access = new ArrayList<String>();
+	    access.add("Technicient qualite");
+	    access.add("Responsable qualite");
+	    access.add("Injenieur qualite");
+	    Utilisateur u = utilisateurService.getUtilisateurByUsername(p.getName());
+	    
+	    if(!access.contains(u.getUtilisateurRoles().get(0).getRole())) {
+	    	return "denied";
+	    }
 		List<Zone40F> zone40fs = zone40FService.fetchAll();
 		map.addAttribute("zone40fs",zone40fs);
 		Zone40F z = zone40FService.find(id);
 		map.addAttribute("z",z);
+		map.addAttribute("utilisateur",u);
 		return "zone40f/edit";
 	}
 	

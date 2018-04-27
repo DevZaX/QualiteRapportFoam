@@ -14,8 +14,8 @@
 	    <context:component-scan base-package="com" />
 	    
 	    
-	     
-	    <bean
+	  
+	  <bean
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/views/</value>
@@ -23,7 +23,9 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
-    </bean>
+        
+    </bean> 
+	  
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -64,6 +66,9 @@
 				<value>com.model.Poste</value>
 				<value>com.model.PosteForPiece</value>
 				<value>com.model.AlertInjection</value>
+				<value>com.model.ControleInjection</value>
+				<value>com.model.ControleMur</value>
+				<value>com.model.ScrapNoDeclarer</value>
 			
 			
 				
@@ -248,6 +253,30 @@
 	<property name="alertInjectionDAO" ref="alertInjectionDAO"></property>
 	</bean>
 	
+	<!-- controleInjection -->
+	<bean id="controleInjectionDAO" class="com.dao.ControleInjectionDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="controleInjectionService" class="com.service.ControleInjectionServiceImpl">
+	<property name="controleInjectionDAO" ref="controleInjectionDAO"></property>
+	</bean>
+	
+	<!-- controleMur -->
+	<bean id="controleMurDAO" class="com.dao.ControleMurDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="controleMurService" class="com.service.ControleMurServiceImpl">
+	<property name="controleMurDAO" ref="controleMurDAO"></property>
+	</bean>
+	
+	<!-- scrapNoDeclarer -->
+	<bean id="scrapNoDeclarerDAO" class="com.dao.ScrapNoDeclarerDAOImpl">
+	<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"></property>
+	</bean>
+	<bean id="scrapNoDeclarerService" class="com.service.ScrapNoDeclarerServiceImpl">
+	<property name="scrapNoDeclarerDAO" ref="scrapNoDeclarerDAO"></property>
+	</bean>
+	
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
@@ -266,11 +295,12 @@
         <property name="maxUploadSize" value="20848820" />
     </bean>
 	
-	
 	    <mvc:annotation-driven />
 	    <mvc:resources mapping="/css/**" location="/WEB-INF/resources/css/"/>
 	    <mvc:resources mapping="/js/**"  location="/WEB-INF/resources/js/"/>
 	    <mvc:resources mapping="/fonts/**" location="/WEB-INF/resources/fonts/"/>
 	    <mvc:resources mapping="/images/**" location="/WEB-INF/resources/images/"/>
+	    <mvc:resources mapping="/static/**" location="/WEB-INF/resources/static/"/>
+	    <mvc:resources mapping="/excel/**" location="/WEB-INF/resources/excel/"/>
 	    
 	</beans>

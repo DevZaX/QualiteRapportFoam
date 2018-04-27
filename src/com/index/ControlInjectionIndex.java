@@ -2,72 +2,60 @@ package com.index;
 
 public class ControlInjectionIndex {
 
+	private Long id;
 	private String ref;
-	private int qteScrap;
-	private int qteRetouche1;
-	private int qteRetouche2;
-	private int qteOK;
-	private int qteController;
-	private float scrapRate;
+	private double qteScrap;
+	private double qteRetouche1;
+	private double qteRetouche2;
+	private double qteOK;
+	private double qteController;
+	private double scrapRate;
 	private double IPPM;
+	private String scrapRateString;
+	private String IPPMString;
 	private double scrapCost;
 	private double scrapTotalCost;
 	private double PCCostScrap;
 	private double PCCostTotal;
 	private double PCWScrap;
 	private double PCWTotal;
-	
 	public String getRef() {
 		return ref;
 	}
-
 	public void setRef(String ref) {
 		this.ref = ref;
 	}
-	
-	
-	public int getQteScrap() {
+	public double getQteScrap() {
 		return qteScrap;
 	}
-	public void setQteScrap(int qteScrap) {
+	public void setQteScrap(double qteScrap) {
 		this.qteScrap = qteScrap;
 	}
-	public int getQteRetouche1() {
+	public double getQteRetouche1() {
 		return qteRetouche1;
 	}
-	public void setQteRetouche1(int qteRetouche1) {
+	public void setQteRetouche1(double qteRetouche1) {
 		this.qteRetouche1 = qteRetouche1;
 	}
-	public int getQteRetouche2() {
+	public double getQteRetouche2() {
 		return qteRetouche2;
 	}
-	public void setQteRetouche2(int qteRetouche2) {
+	public void setQteRetouche2(double qteRetouche2) {
 		this.qteRetouche2 = qteRetouche2;
 	}
-	public int getQteOK() {
+	public double getQteOK() {
 		return qteOK;
 	}
-	public void setQteOK(int qteOK) {
+	public void setQteOK(double qteOK) {
 		this.qteOK = qteOK;
 	}
-	public int getQteController() {
+	public double getQteController() {
 		return qteController;
 	}
-	public void setQteController(int qteController) {
+	public void setQteController(double qteController) {
 		this.qteController = qteController;
 	}
-	public double getScrapRate() {
-		return scrapRate;
-	}
-	public void setScrapRate(float scrapRate) {
-		this.scrapRate = scrapRate;
-	}
-	public double getIPPM() {
-		return IPPM;
-	}
-	public void setIPPM(double iPPM) {
-		IPPM = iPPM;
-	}
+	
 	public double getScrapCost() {
 		return scrapCost;
 	}
@@ -104,14 +92,36 @@ public class ControlInjectionIndex {
 	public void setPCWTotal(double pCWTotal) {
 		PCWTotal = pCWTotal;
 	}
-
-	@Override
-	public String toString() {
-		return "ControlInjectionIndex [ref=" + ref + ", qteScrap=" + qteScrap + ", qteRetouche1=" + qteRetouche1
-				+ ", qteRetouche2=" + qteRetouche2 + ", qteOK=" + qteOK + ", qteController=" + qteController
-				+ ", scrapRate=" + scrapRate + ", IPPM=" + IPPM + ", scrapCost=" + scrapCost + ", scrapTotalCost="
-				+ scrapTotalCost + ", PCCostScrap=" + PCCostScrap + ", PCCostTotal=" + PCCostTotal + ", PCWScrap="
-				+ PCWScrap + ", PCWTotal=" + PCWTotal + "]";
+	public double getScrapRate() {
+		return scrapRate;
 	}
+	public void setScrapRate(double scrapRate) {
+		this.scrapRate = scrapRate;
+	}
+	public double getIPPM() {
+		return IPPM;
+	}
+	public void setIPPM(double iPPM) {
+		IPPM = iPPM;
+	}
+	public String getScrapRateString() {
+		return scrapRateString;
+	}
+	public void setScrapRateString(String scrapRateString) {
+		this.scrapRateString = scrapRateString;
+	}
+	public String getIPPMString() {
+		return IPPMString;
+	}
+	public void setIPPMString(String iPPMString) {
+		IPPMString = iPPMString;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 
 }

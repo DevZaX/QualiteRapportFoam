@@ -1,6 +1,7 @@
 package com.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public class ControlMurServiceImpl implements ControlMurService {
 		this.controlDAO = controlDAO;
 	}
 
+    
+
 
 
 	@Override
@@ -32,8 +35,23 @@ public class ControlMurServiceImpl implements ControlMurService {
 
 	@Override
 	@Transactional
-	public ControlMur fetchAll(Date startDate, Date endDate, String upperCase) {
-		return controlDAO.fetchAll(startDate,endDate,upperCase);
+	public ControlMur fetchAll(Date startDate, Date endDate, String upperCase,String mat) {
+		return controlDAO.fetchAll(startDate,endDate,upperCase,mat);
+	}
+
+
+
+	@Override
+	@Transactional
+	public List<ControlMur> filter(Date start, Date end, String zone, String prototype, String equipe) {
+		return controlDAO.filter(start,end,zone,prototype,equipe);
+	}
+
+
+
+	@Override
+	public int getInt(String requete) {
+		return controlDAO.getInt(requete);
 	}
 
 }

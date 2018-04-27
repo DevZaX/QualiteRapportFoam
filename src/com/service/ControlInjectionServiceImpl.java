@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.ControlInjectionDAO;
 import com.model.ControlInjection;
+import com.model.DefautControl;
 
 public class ControlInjectionServiceImpl implements ControlInjectionService {
 	
@@ -48,8 +49,8 @@ public class ControlInjectionServiceImpl implements ControlInjectionService {
 
 	@Override
 	@Transactional
-	public ControlInjection fetchAll(Date startDate, Date endDate, String ref) {
-		return controlDAO.fetchAll(startDate,endDate,ref);
+	public ControlInjection fetchAll(Date startDate, Date endDate, String ref,String matricule) {
+		return controlDAO.fetchAll(startDate,endDate,ref,matricule);
 	}
 
 
@@ -67,6 +68,33 @@ public class ControlInjectionServiceImpl implements ControlInjectionService {
 	public List<ControlInjection> findBy(Date startDate, Date endDate,String champ ,String type) {
 		
 		return controlDAO.findBy(startDate,endDate,champ,type);
+	}
+
+
+
+	@Override
+	@Transactional
+	public List<ControlInjection> filter(Date date_debut, Date date_fin, String zone, String prototype,
+			String equipe) {
+		return controlDAO.filter(date_debut,date_fin,zone,prototype,equipe);
+	}
+
+
+
+	@Override
+	@Transactional
+	public ControlInjection find(Long id) {
+		return controlDAO.find(id);
+	}
+
+
+
+	@Override
+	@Transactional
+	public List<ControlInjection> critere(Date date_debut, Date date_fin, String zone, String prototype, String equipe,
+			String projet, String famille, String designation) {
+		
+		return controlDAO.critere(date_debut, date_fin, zone, prototype, equipe, projet, famille, designation);
 	}
 
 }
